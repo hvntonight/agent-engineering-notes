@@ -21,12 +21,15 @@ def fetch(url):
         return response.read()
 
 
-def verify(base,minimum_reviews):
+def verify(base,minimum_reviews,expected_local=False):
     assert base.startswith('https://') and base.endswith('/')
     html=fetch(base).decode('utf-8')
     assert 'Agent 工程笔记' in html and './assets/app.js' in html
     manifest=json.loads(fetch(base+'data/build-manifest.json'))
     assert manifest['chapters']==8 and manifest['tutorial_cases']==14
+    if expected_local:
+        local=Path(__file__).resolve().parents[1]/'docs/data/build-manifest.json'
+        assert manifest==json.loads(local.read_text()),'Published artifact is not the expected local build yet'
     def check(entry):
         relative,digest=entry
         assert not PurePosixPath(relative).is_absolute() and '..' not in PurePosixPath(relative).parts
@@ -57,7 +60,7 @@ def verify(base,minimum_reviews):
             if exit_code==0:assert result['answer']=='51768'
             else:assert result['status']=='step_budget_exhausted'
             runs.append({'arguments':arguments,'exit_code':exit_code,'decision_steps':steps,'model_calls':0})
-    return {'base':base,'https':'verified','manifest_assets_matched':len(verified),'chapters':8,'tutorial_cases':14,
+    return {'base':base,'https':'verified','manifest_assets_matched':len(verified),'expected_local_build_matched':expected_local,'chapters':8,'tutorial_cases':14,
             'public_review_rounds':len(review_log['rounds']),'real_trials':22,'model_decisions':33,'downloaded_lab_runs':runs}
 
 
@@ -65,8 +68,9 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('--base',default='https://hvntonight.github.io/agent-engineering-notes/')
     parser.add_argument('--minimum-reviews',type=int,default=3)
+    parser.add_argument('--expected-local',action='store_true')
     args=parser.parse_args()
-    result=verify(args.base,args.minimum_reviews)
+    result=verify(args.base,args.minimum_reviews,args.expected_local)
     output=Path('qa-artifacts/round-3-release.json')
     output.parent.mkdir(exist_ok=True)
     output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')

@@ -60,6 +60,14 @@ node tests/browser.mjs
 
 浏览器使用 Playwright 已配置的 Chromium；本机有兼容浏览器时可设置 `CHROMIUM_EXECUTABLE`。`COURSE_BASE_URL` 可指向同一路径下的公网版本。截图和测试临时记录位于忽略目录 `qa-artifacts/`。
 
+核对公网资源哈希、三轮记录，并实际运行下载包的三条确定性路径：
+
+```bash
+python3 tests/live_release.py --expected-local
+```
+
+该检查不调用模型；`--expected-local` 还会拒绝与当前本地构建不一致的线上版本。
+
 ## 发布
 
 GitHub Pages 的发布源为 `main` 分支的 `/docs`。发布使用 PAT 认证的 GitHub REST API 创建或更新 tree、commit 与 branch ref，并配置 Pages；认证由站点之外的本地发布客户端负责。

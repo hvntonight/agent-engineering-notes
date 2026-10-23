@@ -1,0 +1,39 @@
+{
+  "round": 3,
+  "date": "2026-10-24",
+  "focus": "公网发布、完整公开文件与下载包",
+  "findings": [
+    {
+      "issue": "发布检查原先只扫描 docs，未覆盖一并公开的源码、测试和审阅记录。",
+      "resolution": "扩展为与发布客户端相同的文件允许列表；同时扫描 ZIP 内容，检查私有路径、凭据特征和根路径资源引用。另核对两个文件列表完全一致。",
+      "status": "closed"
+    },
+    {
+      "issue": "首次启用 Pages 时，证书生成中的过渡状态被发布客户端直接当成失败。",
+      "resolution": "区分证书待就绪与其他 API 错误，并以最终 Pages 状态和实际 HTTPS 请求验证。线上 HTTPS 已启用。",
+      "status": "closed"
+    },
+    {
+      "issue": "公网检查捕获到通知淡入动画的中间帧，文字对比度暂时低于要求。",
+      "resolution": "取消透明度过渡，保留位移动画；随后在公网重新完成全部浏览器与自动无障碍检查。",
+      "status": "closed"
+    }
+  ],
+  "validation": {
+    "public_url": "https://hvntonight.github.io/agent-engineering-notes/",
+    "https_verified": true,
+    "browser_checks_passed": 54,
+    "browser_checks_failed": 0,
+    "accessibility_pages_checked": 7,
+    "automated_accessibility_violations": 0,
+    "manifest_asset_hashes_matched": 20,
+    "expected_local_build_matched": true,
+    "downloaded_lab_checks": [
+      {"path": "normal", "exit_code": 0, "decision_steps": 3},
+      {"path": "temporary_failure", "exit_code": 0, "decision_steps": 4},
+      {"path": "budget_exhausted", "exit_code": 1, "decision_steps": 3}
+    ],
+    "new_model_calls": 0,
+    "limitations": "这是一次发布回归，不新增模型能力成绩；原有 22 次合成开发试验的样本限制仍然适用。自动无障碍检查不替代真人读屏测试。"
+  }
+}

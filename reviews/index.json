@@ -39,6 +39,26 @@
           1440
         ]
       }
+    },
+    {
+      "round": 3,
+      "date": "2026-10-24",
+      "focus": "公网发布与公开文件",
+      "result": "在实际 GitHub Pages 入口通过 54 项浏览器检查；20 个资源哈希吻合，下载包三条路径符合预期。",
+      "changes": [
+        "将隐私扫描从网站目录扩大到全部公开源码、记录与 ZIP。",
+        "处理首次证书生成的过渡状态，确认最终 HTTPS 可用。",
+        "修复公网发现的通知淡入对比度问题，完成线上回归。"
+      ],
+      "evidence": {
+        "review_file": "reviews/round-3-findings.json",
+        "site_url": "https://hvntonight.github.io/agent-engineering-notes/",
+        "public_browser_checks_passed": 54,
+        "automated_accessibility_violations": 0,
+        "manifest_asset_hashes_matched": 20,
+        "downloaded_lab_paths_checked": 3,
+        "new_model_calls": 0
+      }
     }
   ]
 }
