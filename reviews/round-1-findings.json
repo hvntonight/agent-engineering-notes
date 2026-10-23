@@ -1,0 +1,105 @@
+{
+  "round": 1,
+  "focus": "内容与教学、练习可执行性、数字/动作和真实记录对应",
+  "checked_at": "2026-10-23T17:01:05.553127+00:00",
+  "reviewed_sha256": {
+    "src/course.py": "236cd4901514e229ea57c3cb26bb095be7977b901c9c9f47a68d5a5e5b590b5c",
+    "src/tutorial-cases.json": "1c3b93de6a7b5d6b3e02633cfec268fd7fbdfe8e3f8e24c39dcbc650b0949392",
+    "src/experiments.json": "22d4736150a0c84aad5cd9253671f819825f6a818324b7106b854b4d38c6967a",
+    "docs/assets/labs.js": "4d188cee969fc4249ff1f2ec39f76f4bb51ed2f703d5e2be110327c71f1baeb4",
+    "lab/README.md": "7dd851ac37f1949da8f041269342172184c7563c78d1b46c358cb4b4ddaf921d",
+    "lab/run.py": "b80d45af2f942a0917971b7b299385d63b2264bbf796f9e6c2188a42013b9757",
+    "lab/task.json": "2e2978847086026ad0e6be5fddfe83224498d52b82b61219defdfede4286dfc2"
+  },
+  "findings": [
+    {
+      "severity": "medium",
+      "file": "lab/run.py:32-37; lab/task.json:question; src/course.py:99-103",
+      "issue": "任务明示“使用计算器时引用计算”，但 score 只检查数值和 finished。已构造 calculate 成功、finish 返回 51768 但 citations=[] 的结果，score 返回 True，最后会被标为 task_success=true。这里讲的是评分器的能力边界，当前命名却把一项未检查的任务要求算作完整通过。",
+      "suggested_fix": "将数值正确与任务通过分别返回；任务通过应在实际使用计算器时检查引用了本次成功计算且与答案一致，并拒绝未观察到的引用。也可以保留现有检查但明确改名为 numeric_outcome_pass、说明不含引用要求；若继续展示 task_success 则应满足 task.json 中的完整契约。增加一个缺引用的反例检查。",
+      "resolution": {
+        "status": "closed",
+        "checked_at": "2026-10-23T17:12:37.963755+00:00",
+        "evidence": [
+          "run.py 的 grade 独立返回 answer_correct、citations_ok 与 task_success；任务通过要求正确数值、finished 和本次成功计算的匹配引用。",
+          "实跑6项 unittest 全通过；缺引用、calc:99伪引用、仅文档引用均不通过完整任务；错公式可以通过计算一致性但 answer_correct=false。",
+          "未完成状态即使数值正确也不算任务通过；无计算的直接回答仍按原契约允许不引用计算。"
+        ]
+      }
+    },
+    {
+      "severity": "medium",
+      "file": "src/course.py:87; lab/README.md; lab/run.py:41-61",
+      "issue": "第4节的“加入20份历史单据并记录总输入/调用数”没有说明如何在下载包中执行。默认 scripted 忽略资料内容、usage={} 且 model_calls=0；run.py 也没有资料规模/位置选项。任务资料实际是 task.json 中的 documents 字典，正文说移动到列表中间，读者缺少要改哪个文件、保持哪个键和用哪个后端的指引。",
+      "suggested_fix": "补一个可复制的小例子：在 task.json.documents 增加 archive 键、保留 inventory-current，并用键的插入顺序控制进入上下文的位置；明确这项用量练习需 --backend codex --output 各自的新目录，会消耗额度；指出从 result.json 的 usage.input_tokens 与 model_calls 取数。若仅做设计，不要让其看起来是下载后已经有参数可跑的实验。",
+      "resolution": {
+        "status": "closed",
+        "checked_at": "2026-10-23T17:12:37.963755+00:00",
+        "evidence": [
+          "新增 add_documents.py 与 run.py --task。生成 --count 20 --position middle 实际得到21份资料，inventory-current 位于索引10。",
+          "用临时目录实际生成资料变体并通过 --task 运行 scripted，返回51768且任务通过；该验证没有调用模型。",
+          "src/course.py 与生成的 docs/data/course.json 均包含 Codex 用量命令、result.json路径及usage.input_tokens/model_calls/elapsed_s的读取说明，并明确 scripted 不测上下文性能。"
+        ]
+      }
+    },
+    {
+      "severity": "medium",
+      "file": "src/course.py:139; lab/run.py:49-61; docs/assets/app.js:blockHtml exercise",
+      "issue": "第7节要求“运行中再提供一份更晚生效的修订单”，但当前任务在启动前一次读入，run_agent 只收到静态 question/documents；CLI 无中途输入、资料变更或步边界注入接口。网页把此块统一标作“动手改一处”，却没有说明这是需要扩展执行器的设计练习。直接在启动前改 JSON 不能验证运行中的依赖失效。",
+      "suggested_fix": "明确标为需要扩展的设计练习，给出所需钩子/接口与验收轨迹（先观察旧来源，再在指定步骤注入新版本，随后检查旧结果是否失效）；或提供一个确定性的 revision-at-step 夹具及命令。不要把预先更换资料的运行当成中途修订实测。",
+      "resolution": {
+        "status": "closed",
+        "checked_at": "2026-10-23T17:12:37.963755+00:00",
+        "evidence": [
+          "第7节明确说明当前runner启动时读取task，尚无中途资料更新接口，启动前改JSON不是中途更新。",
+          "新增 before_decision / world.update_document 示意契约，明确标为待实现API，不宣称已经可调用。",
+          "生成的 docs/data/course.json 练习标签实际为“设计练习”，前端按 block.label 渲染；与普通动手练习区分。"
+        ]
+      }
+    }
+  ],
+  "good_changes": [
+    "八节围绕可核对的库存任务推进，先给可运行入口，再解释边界；小节数量与交互形式已有变化，移除了旧版每章固定两道送分题和统一金句。统一的实践记录页脚本身不构成教学模板问题。",
+    "22 条公开实验与原 agent-design-lab/results 下记录逐条核对：case_id、模式、结束状态、答案、引用、usage、耗时、模型和工具次数、评分、每个动作及 observation 均无差异。删除动作 note 属展示裁剪，没有改造轨迹。",
+    "实际执行 README 三条确定性命令：正常路径 3 次决策、故障路径 4 次决策，均输出 51768/exit 0；故障且 steps=3 时最后计算成功但 status=step_budget_exhausted/exit 1，完全符合课文。没有新增模型调用。",
+    "真实恢复记录是 calculate-error → calculate-success → finish；正文已明确原始资料在初始输入里，没有伪造额外 read，与网页固定脚本演示分开。",
+    "上下文数据 15,171/31,174 与 61,593/31,175、耗时和约49.4%输入减少均与原记录对应，并保留单题、单次、简单干扰及非账单测量的限制。",
+    "浏览器计算器用受限解析与 BigInt 有理数；验证示例的 50,352 和变体答案 51,560 数值正确。演示、历史回放和真实 Codex 调用的标记清楚。",
+    "实现走读保留 Claude Code 的公开文档边界、OpenCode V2 的 Plan/沙箱区别、Pi 固定版本与能力演进；未发现把四家功能对照说成可比性能排名。",
+    "本人此前实际阅读的七组 B 资料借鉴保持准确，访问限制与归档状态仍在。另复查 Minimal Agent、Hugging Face 两页、ADK、Pydantic AI、Microsoft Learn 可见总览，未发现所借鉴教学组织超出可读范围。"
+  ],
+  "verification": {
+    "commands_run": [
+      "python3 run.py",
+      "python3 run.py --fail-first calculate",
+      "python3 run.py --fail-first calculate --steps 3"
+    ],
+    "command_workdir": "lab",
+    "original_records_compared": 22,
+    "model_calls_made_by_review": 0,
+    "web_primary_sources_reopened": [
+      "https://minimal-agent.com/",
+      "https://huggingface.co/learn/agents-course/en/unit1/tutorial",
+      "https://huggingface.co/docs/smolagents/en/guided_tour",
+      "https://adk.dev/get-started/python/",
+      "https://pydantic.dev/docs/ai/examples/conversational-agents/bank-support/",
+      "https://learn.microsoft.com/en-us/agent-framework/get-started/"
+    ],
+    "limits": "未修改应用和源课件；未访问 GitHub 或调用 gh；本轮未做浏览器操作测试，源码阅读和确定性命令不能代替下一轮浏览器验证。"
+  },
+  "resolution": {
+    "status": "all_three_closed",
+    "checked_at": "2026-10-23T17:12:37.963755+00:00",
+    "scope": "仅复核本轮三项修复，不计为第二轮审阅。未修改应用和源课件，未调用模型，未访问GitHub或使用gh。",
+    "test_result": "6 tests passed",
+    "reviewed_sha256": {
+      "lab/run.py": "4cc8ae58a7abb0fc3c96da075f497d303242b5425da46275e062bc124540f871",
+      "lab/add_documents.py": "c4eaa4910b13400f82b503ac290874e517082a8b1d49d9fe743904a18fa96f84",
+      "lab/README.md": "e78533b9c87cfcdc3e4d2823b0f9e6fd787aba6f93fe06c684b812e99ac4fe30",
+      "tests/test_lab.py": "dd2c39d24c51403828ce8cdc694f5c4f9776749f03127578dc10a69981c8b359",
+      "src/course.py": "32022e7eca88e959092beb9fb09d08c07aa5c0ce1bc2b62d89114152a42e6da0",
+      "docs/assets/app.js": "2f61ecc10865ddc7388f4efe2c80a19205229aa2b6b56525752fa7202dda4f63",
+      "docs/data/course.json": "8969260ac3b31ee8775b9b8da8c69b45992f84cad30f3ceb952a301f9cdbcd4e"
+    }
+  }
+}

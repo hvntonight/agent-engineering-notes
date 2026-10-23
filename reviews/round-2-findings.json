@@ -1,0 +1,31 @@
+{
+  "round": 2,
+  "focus": "浏览器交互、键盘操作、布局与可读性",
+  "date": "2026-10-24",
+  "findings": [
+    {
+      "issue": "实验部件重绘后，键盘焦点回到页面，连续操作不便。",
+      "resolution": "按触发控件的标识恢复焦点；用 Enter 连续推进循环并检查焦点仍在实验区域。",
+      "status": "closed"
+    },
+    {
+      "issue": "图表容器使用图像角色，使辅助技术难以逐项读取真实数值。",
+      "resolution": "改用分组语义，隐藏纯装饰条，保留每项的文本与数值。",
+      "status": "closed"
+    },
+    {
+      "issue": "实验说明、依赖图和笔记编号的部分小字对比度不足。",
+      "resolution": "加深文字颜色，并检查 7 个代表页面的 WCAG A/AA 自动规则。",
+      "status": "closed"
+    }
+  ],
+  "validation": {
+    "browser_checks_passed": 54,
+    "browser_checks_failed": 0,
+    "accessibility_pages_checked": ["overview", "02", "04", "06", "08", "notes", "references"],
+    "automated_accessibility_violations": 0,
+    "layout_widths_px": [390, 768, 1440],
+    "screenshots_inspected": ["home-desktop", "home-mobile", "calculator-mobile"],
+    "limitations": "自动无障碍检查未覆盖真人读屏使用；截图与操作记录属于本地 QA 产物。"
+  }
+}

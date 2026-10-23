@@ -1,0 +1,9 @@
+{
+  "id": "inventory",
+  "question": "How many resellable units remain? Use the supplied current inventory record. Return only the integer and cite the calculation if used. If the required data is absent, answer INSUFFICIENT_EVIDENCE.",
+  "documents": {
+    "inventory-current": "Current inventory: 411 boxes, 152 units per box; 11260 units shipped; 708 resellable returned units received; 152 damaged units discarded. All counts describe the same accounting period."
+  },
+  "fixture_expression": "411 * 152 - 11260 + 708 - 152",
+  "expected": "51768"
+}

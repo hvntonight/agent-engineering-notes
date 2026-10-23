@@ -1,0 +1,630 @@
+[
+  {
+    "id": "codex",
+    "agent": "Codex",
+    "title": "Codex：可复用的执行运行时与产品集成边界",
+    "checked_date": "2026-10-23",
+    "principles": [
+      {
+        "title": "把模型与 harness 分开",
+        "fact": "官方将上下文、工具循环、执行边界和跨轮状态归入 harness；CLI、app-server 和 SDK 是可检查的开放组件，模型访问和托管服务另行提供。",
+        "problem": "设计解读：模型能产生动作，并不足以可靠完成持续任务。",
+        "tradeoff": "设计解读：复用运行时能减少基础工程，也会继承其协议和运行语义。",
+        "source_url": "https://developers.openai.com/blog/codex-as-a-platform"
+      },
+      {
+        "title": "按产品需要选择集成层",
+        "fact": "codex exec 面向有界脚本任务；SDK 提供线程调用、继续和流式结果；app-server 提供更完整的客户端生命周期与事件接口。",
+        "problem": "设计解读：一次性自动化和交互产品需要不同的控制粒度。",
+        "tradeoff": "设计解读：集成越深入，应用需要处理的中断、事件和用户交互也越多。",
+        "source_url": "https://developers.openai.com/blog/codex-as-a-platform"
+      },
+      {
+        "title": "显式区分线程、轮次与条目",
+        "fact": "app-server 以 JSON-RPC 交换请求和通知；thread 承载会话，turn 承载一次工作，item 表示消息、工具活动等事件单元。客户端需要初始化并处理运行事件。",
+        "problem": "设计解读：界面必须知道任务仍在执行、等待交互，还是已经结束。",
+        "tradeoff": "设计解读：显示流式输出只是界面的一部分；还要管理中断、失败和恢复。",
+        "source_url": "https://learn.chatgpt.com/docs/app-server"
+      },
+      {
+        "title": "授权决策与执行隔离分开",
+        "fact": "官方分别解释 sandbox 与 approval：前者限制命令能够访问的资源，后者决定动作何时需要审批。具体边界随客户端、平台和配置变化。",
+        "problem": "设计解读：自然语言约定不能代替操作系统执行限制。",
+        "tradeoff": "设计解读：边界越窄越需要提前准备依赖和资源；允许某次动作也不能自动扩大所有资源访问。",
+        "source_url": "https://learn.chatgpt.com/docs/sandboxing"
+      },
+      {
+        "title": "把生命周期能力接入运行时",
+        "fact": "Hooks 可在工具、压缩和停止等生命周期事件接入脚本或工具；具体事件、处理器和信任要求由配置契约定义。",
+        "problem": "设计解读：审计与检查需要放到实际执行路径，而非仅写在提示中。",
+        "tradeoff": "设计解读：必须测试失败路径及策略语义，不能把安装 hook 当成已有强制保证。",
+        "source_url": "https://learn.chatgpt.com/docs/hooks"
+      },
+      {
+        "title": "通过真实反馈维持长任务",
+        "fact": "官方长任务实践强调编辑、执行工具、观察失败并修复；代码库、文件与执行结果可提供外部状态和反馈。",
+        "problem": "设计解读：长任务不能只依赖一次大提示与最后的完成宣称。",
+        "tradeoff": "设计解读：状态、验证与预算都需管理，增加轮数本身不能保证质量。",
+        "source_url": "https://developers.openai.com/blog/run-long-horizon-tasks-with-codex"
+      },
+      {
+        "title": "脚本调用保留结构化事件",
+        "fact": "非交互模式可返回 JSONL 事件并约束最终结构化结果，默认可复用现有 CLI 登录；认证方式决定使用订阅或 API 访问。",
+        "problem": "设计解读：实验需要保存事件、结束原因和用量，而不是只保存最后一句答案。",
+        "tradeoff": "设计解读：用 CLI 作为决策后端仍保留其内置提示，不能把结果称为裸模型测试。",
+        "source_url": "https://learn.chatgpt.com/docs/non-interactive-mode"
+      }
+    ],
+    "sources": [
+      {
+        "id": "codex-platform",
+        "title": "Codex as a platform",
+        "url": "https://developers.openai.com/blog/codex-as-a-platform"
+      },
+      {
+        "id": "codex-protocol",
+        "title": "Codex App Server protocol",
+        "url": "https://learn.chatgpt.com/docs/app-server"
+      },
+      {
+        "id": "codex-sandbox",
+        "title": "Sandbox",
+        "url": "https://learn.chatgpt.com/docs/sandboxing"
+      },
+      {
+        "id": "codex-hooks",
+        "title": "Hooks",
+        "url": "https://learn.chatgpt.com/docs/hooks"
+      },
+      {
+        "id": "codex-long",
+        "title": "Run long horizon tasks with Codex",
+        "url": "https://developers.openai.com/blog/run-long-horizon-tasks-with-codex"
+      },
+      {
+        "id": "codex-exec",
+        "title": "Non-interactive mode",
+        "url": "https://learn.chatgpt.com/docs/non-interactive-mode"
+      },
+      {
+        "id": "codex-sdk",
+        "title": "Codex SDK",
+        "url": "https://learn.chatgpt.com/docs/codex-sdk"
+      }
+    ],
+    "pitfalls": [
+      "Codex 是运行时和产品体系，不能与单个基础模型混称。",
+      "本课程 direct 条件关闭了原生工具，不是默认 Codex 产品的完整能力。",
+      "开源 harness 不等于开源模型权重。",
+      "计划、审批、沙箱和验证承担不同职责。",
+      "本机实验 CLI 为 0.164.0；官方文档和服务可能持续更新。"
+    ]
+  },
+  {
+    "id": "claude",
+    "agent": "Claude Code",
+    "title": "Claude Code：围绕任务循环管理上下文、执行与扩展",
+    "checked_date": "2026-10-23",
+    "principles": [
+      {
+        "title": "以环境反馈推动任务循环",
+        "fact": "官方把核心循环概括为获取上下文、采取行动、验证结果。工具结果进入后续决策，用户可以中途打断并改变方向。Claude Code 是管理工具与上下文的 harness，而不只是模型。",
+        "problem": "设计解读：在未知代码库中，预先固定全部步骤很难适应新错误和执行反馈。",
+        "tradeoff": "设计解读：动态循环增加能力，也需要明确预算、失败分类和完成判定；循环本身不保证正确。",
+        "source_url": "https://code.claude.com/docs/en/how-claude-code-works"
+      },
+      {
+        "title": "把上下文当作有限资源",
+        "fact": "窗口容纳会话、文件、命令输出和指令。接近上限时会先清理较旧工具输出，再按需总结；早期细节可能丢失。",
+        "problem": "设计解读：长期任务不能依靠不断追加原始日志维持状态。",
+        "tradeoff": "设计解读：压缩节省空间，但必须用任务测试检查关键约束与证据是否保留。",
+        "source_url": "https://code.claude.com/docs/en/how-claude-code-works"
+      },
+      {
+        "title": "区分持久指令与自动记忆",
+        "fact": "CLAUDE.md 保存人工编写的项目约定，auto memory 保存 Claude 积累的笔记；官方明确说二者作为上下文，而非强制配置。",
+        "problem": "设计解读：跨会话需要复用约定，同时区分人设定的规则与模型总结的经验。",
+        "tradeoff": "设计解读：常驻内容有上下文成本；必须强制禁止的行为需要执行层约束，不能只写进文字。",
+        "source_url": "https://code.claude.com/docs/en/memory"
+      },
+      {
+        "title": "按需装载技能内容",
+        "fact": "SKILL.md 可封装说明和支持材料。技能可由用户调用或按相关性调用，完整正文在使用时装载。",
+        "problem": "设计解读：把每一种流程都放进常驻指令，会稀释当前任务的重要信息。",
+        "tradeoff": "设计解读：延迟装载减少无关内容，但描述和触发规则会影响能否选对技能。",
+        "source_url": "https://code.claude.com/docs/en/skills"
+      },
+      {
+        "title": "用独立上下文隔离有界子任务",
+        "fact": "Subagent 有自己的上下文、系统提示、工具范围和权限；向主任务返回结果，自身请求计入相同用量限制。",
+        "problem": "设计解读：搜索日志等高体量旁支工作容易占满主任务窗口。",
+        "tradeoff": "设计解读：返回摘要减少主窗口负担，也可能遗漏信息；委派增加请求与协调开销，应按任务验证。",
+        "source_url": "https://code.claude.com/docs/en/sub-agents"
+      },
+      {
+        "title": "把生命周期控制落实到钩子契约",
+        "fact": "Hooks 可在工具执行前后等事件运行。PreToolUse 可给出阻断等决定；命令或 HTTP hook 的错误、超时是否阻断与事件及 onFailure 设置有关。",
+        "problem": "设计解读：格式化、审计或策略检查需要可观察的运行时接入点。",
+        "tradeoff": "设计解读：命令检查可确定性执行，prompt/agent hook 仍涉及模型。必须实测失败路径，不能把“配置了 hook”当成已经强制执行。",
+        "source_url": "https://code.claude.com/docs/en/hooks"
+      },
+      {
+        "title": "权限决策独立于自然语言要求",
+        "fact": "权限规则、权限模式和受管理策略控制哪些工具动作自动运行、询问或拒绝。不同模式下行为不同。",
+        "problem": "设计解读：执行权限不能只依赖模型是否遵守提示词。",
+        "tradeoff": "设计解读：更细规则增加维护成本；教学中应给出具体动作、范围与模式，而非笼统说全部需要确认。",
+        "source_url": "https://code.claude.com/docs/en/permissions"
+      },
+      {
+        "title": "明确沙箱覆盖的执行范围",
+        "fact": "官方 Bash 沙箱用操作系统限制 shell 命令及其子进程的文件和网络访问；文件工具、MCP servers、hooks 不在该 Bash 沙箱内。平台与配置影响实际覆盖。",
+        "problem": "设计解读：需要知道风险由哪一层约束，不能把工具名当成边界。",
+        "tradeoff": "设计解读：隔离会影响依赖安装、网络和子进程；应测试边界，也为沙箱外能力独立设定控制。",
+        "source_url": "https://code.claude.com/docs/en/sandboxing"
+      },
+      {
+        "title": "选择合适的复用边界",
+        "fact": "Agent SDK 为 Python/TypeScript 提供 Claude Code 的 loop、工具、上下文、会话和权限等能力，并运行 Claude Code binary。Client SDK 提供直接 API 访问。",
+        "problem": "设计解读：产品既可复用完整 harness，也可自己实现模型与工具循环。",
+        "tradeoff": "设计解读：复用减少运行时工程，但也继承其语义与约束。第三方产品的订阅登录并非默认可用，官方要求采用受支持认证。",
+        "source_url": "https://code.claude.com/docs/en/agent-sdk/overview"
+      },
+      {
+        "title": "按任务证据增加架构复杂度",
+        "fact": "Anthropic 的实践文章区分由预定义代码路径编排的 workflow 与由模型动态控制行动的 agent，并建议先寻找简单方案。",
+        "problem": "设计解读：固定流程已经能验收的任务，未必需要额外的自主规划层。",
+        "tradeoff": "设计解读：收益必须与耗时、用量、维护成本一起比较，不能用组件数量判断架构先进性。",
+        "source_url": "https://www.anthropic.com/research/building-effective-agents"
+      }
+    ],
+    "sources": [
+      {
+        "id": "claude-loop",
+        "title": "How Claude Code works",
+        "url": "https://code.claude.com/docs/en/how-claude-code-works"
+      },
+      {
+        "id": "claude-memory",
+        "title": "How Claude remembers your project",
+        "url": "https://code.claude.com/docs/en/memory"
+      },
+      {
+        "id": "claude-skills",
+        "title": "Extend Claude with skills",
+        "url": "https://code.claude.com/docs/en/skills"
+      },
+      {
+        "id": "claude-subagents",
+        "title": "Create custom subagents",
+        "url": "https://code.claude.com/docs/en/sub-agents"
+      },
+      {
+        "id": "claude-hooks",
+        "title": "Hooks reference",
+        "url": "https://code.claude.com/docs/en/hooks"
+      },
+      {
+        "id": "claude-permissions",
+        "title": "Configure permissions",
+        "url": "https://code.claude.com/docs/en/permissions"
+      },
+      {
+        "id": "claude-sandbox",
+        "title": "Configure the sandboxed Bash tool",
+        "url": "https://code.claude.com/docs/en/sandboxing"
+      },
+      {
+        "id": "claude-sdk",
+        "title": "Agent SDK overview",
+        "url": "https://code.claude.com/docs/en/agent-sdk/overview"
+      },
+      {
+        "id": "anthropic-effective-agents",
+        "title": "Building effective agents",
+        "url": "https://www.anthropic.com/research/building-effective-agents"
+      }
+    ],
+    "pitfalls": [
+      "本研究依据官方公开文档，不声称已检查 Claude Code 全部内部实现。",
+      "CLAUDE.md、skills、subagents 与 hooks 分别处理持久指令、过程知识、上下文隔离与生命周期控制；它们不能互相等同。",
+      "官方文档在当前版本支持部分 AGENTS.md 用法；不要沿用“只能识别 CLAUDE.md”的过时绝对结论。",
+      "权限提示不等于操作系统沙箱；Bash 沙箱也不覆盖所有扩展能力。",
+      "不要写“所有 hook 都确定性”或“hook 抛错必然阻断”；应说明处理器类型、事件与失败策略。",
+      "Agent SDK 复用 harness 不等于拿到模型权重，也不表示可以把 Claude 订阅当作任意第三方产品 API。",
+      "文档中的产品能力不是与 Codex、Pi、OpenCode 的实测排名；课程模拟必须标注为教学示意。"
+    ]
+  },
+  {
+    "id": "pi",
+    "agent": "pi",
+    "title": "Pi Coding Agent：让核心保持可理解，把工作流交给扩展",
+    "checked_date": "2026-10-23",
+    "repo_revision": "ede2c9b468d8e061c557d16957513715e6d49cd6",
+    "snapshot_version": "1.4.0",
+    "principles": [
+      {
+        "title": "极简是核心职责的选择",
+        "fact": "官方将 Pi 定位为 minimal、extensible harness，通过扩展、技能、模板和主题定制；README 说明默认跳过子代理和计划模式，可由自建能力或安装包补上。",
+        "problem": "设计解读：减少核心对具体工作流的预设，让不同团队复用同一运行骨架。",
+        "tradeoff": "设计解读：定制自由增加，同时把集成、版本维护和策略选择交给使用方。极简不代表产品永远不增加功能。",
+        "borrow": "先给我们的循环一个明确的小接口，只有出现重复失败后再增加机制。",
+        "source_id": "pi-overview",
+        "source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/README.md"
+      },
+      {
+        "title": "四个默认工具，而非只有四种能力",
+        "fact": "默认启用 read、bash、edit、write；CLI 允许改变默认选择，另有 grep、find、ls、powershell 等内置工具。源码 createCodingTools() 对应四个默认工具。",
+        "problem": "设计解读：用少量通用操作覆盖大量代码任务，避免一开始设计庞大的专用工具目录。",
+        "tradeoff": "设计解读：通用 shell 灵活，但执行范围广；实际开销与可靠性必须通过任务对照衡量。",
+        "borrow": "比较少量通用工具与专用计算/检索工具；记录错误、调用次数和总资源。",
+        "source_id": "pi-cli",
+        "source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/cli.md#tools",
+        "additional_source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/src/core/tools/index.ts#L185-L191"
+      },
+      {
+        "title": "一次模型响应不等于整个任务结束",
+        "fact": "提交消息后，Pi 组装活动分支、系统提示、工具和设置，接收流式响应，执行并记录工具结果；工具结果或排队消息需要继续时进入下一轮。steering 与 follow-up 在不同边界进入。",
+        "problem": "设计解读：把模型请求、工具执行和用户追加指令组织成可观察的生命周期。",
+        "tradeoff": "设计解读：一个 run 内存在多个 turn，前端不能把单条完成事件误判为全局空闲。",
+        "borrow": "明确区分模型响应、工具批次和整个任务的完成事件。",
+        "source_id": "pi-how",
+        "source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/how-pi-works.md"
+      },
+      {
+        "title": "内部消息与发给模型的消息分离",
+        "fact": "agent-loop.ts 在内部使用 AgentMessage；streamAssistantResponse 先调用可选 transformContext，再调用 convertToLlm，并在模型请求边界归一化消息。",
+        "problem": "设计解读：应用可以保存丰富状态，同时给模型构造适合供应商协议的上下文视图。",
+        "tradeoff": "设计解读：转换层一旦遗漏状态或破坏工具消息配对，保存的轨迹与模型实际所见就会不一致。",
+        "borrow": "分别记录完整事件与每次实际模型输入，让压缩和过滤策略可以审计。",
+        "source_id": "pi-core",
+        "source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/agent/src/agent-loop.ts#L358-L377"
+      },
+      {
+        "title": "会话是可分支的事件树",
+        "fact": "会话以 JSONL 保存；条目通过 id/parentId 形成树，活动叶节点选出当前分支。回到早先条目继续，可以在同一文件保留另一条分支。",
+        "problem": "设计解读：尝试另一条路线时保留原始过程，支持回溯、比较和继续工作。",
+        "tradeoff": "设计解读：持久历史和模型当前上下文不是同一概念；不能把整个会话树全部发送给模型。",
+        "borrow": "为实验保存分支与父节点，让失败路线保留为可分析数据。",
+        "source_id": "pi-session",
+        "source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/session-format.md"
+      },
+      {
+        "title": "压缩输入视图，保留原始记录",
+        "fact": "Pi 区分上下文 compaction 和切换分支时的 branch summarization。压缩摘要用于后续模型请求；原条目仍留在会话树。自动压缩会在相应模型调用边界检查上下文阈值。",
+        "problem": "设计解读：控制后续输入规模，同时保留审计和回溯材料。",
+        "tradeoff": "设计解读：原记录仍在，不代表模型还记得其中事实；摘要可能遗漏之后才变重要的约束。",
+        "borrow": "把来源、未完成条件和已知失败列入摘要契约，另测压缩后的任务成功率。",
+        "source_id": "pi-compaction",
+        "source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/compaction.md",
+        "additional_source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/how-pi-works.md#sessions"
+      },
+      {
+        "title": "指令扩展与可执行扩展不同",
+        "fact": "Skills 按需提供指令和文件；extensions 是在 Pi 进程中执行的 TypeScript 模块，可注册工具、命令和事件处理器。tool_call 可以修改或阻断执行，tool_result 可以转换结果。",
+        "problem": "设计解读：将复用知识与改变运行行为分开，避免把纯文字约定当成强制执行机制。",
+        "tradeoff": "设计解读：可执行扩展功能更强，也共享进程权限和生命周期，必须承担代码维护与可信性责任。",
+        "borrow": "用技能解释业务规则，用工具/事件边界真正执行参数、权限和结果约束。",
+        "source_id": "pi-extensions",
+        "source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/extensions.md"
+      },
+      {
+        "title": "同一个运行机制，多种集成边界",
+        "fact": "SDK 提供 Node.js/Bun 进程内 TypeScript 集成；RPC 以长期子进程通过 stdin/stdout 交换 JSONL 命令、响应和事件。RPC 文档要求按请求 id 关联异步响应。",
+        "problem": "设计解读：在不重写 Agent 循环的情况下适配终端、其他语言和自定义界面。",
+        "tradeoff": "设计解读：SDK 少一层协议但与宿主共享进程；RPC 增加协议和子进程生命周期管理。进程分离本身不是完整权限隔离。",
+        "borrow": "先确定产品需要事件流、取消和恢复，还是只需要一个最终文本，再选接入层。",
+        "source_id": "pi-rpc",
+        "source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/rpc.md",
+        "additional_source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/sdk.md"
+      },
+      {
+        "title": "项目信任与操作系统边界分开",
+        "fact": "官方说明 Pi 默认使用启动账户权限，不逐工具调用请求批准；project trust 控制多数项目资源加载，并不限制后续工具访问范围。扩展共享 Pi 进程权限；真正限制资源需要操作系统或虚拟化边界。",
+        "problem": "设计解读：把加载可信配置的决定，与限制错误命令影响范围的机制分开理解。",
+        "tradeoff": "设计解读：少弹窗便于持续工作，但调用方必须明确提供的文件、进程、网络和凭据范围。",
+        "borrow": "在课程中分别模拟项目加载信任、工具授权和实际执行隔离，不能用一句提示词代替它们。",
+        "source_id": "pi-security",
+        "source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/security.md"
+      },
+      {
+        "title": "当前版本已有 MCP，不能照抄旧版特征表",
+        "fact": "固定快照提供内置 MCP 支持，连接 stdio 或 streamable HTTP 服务，读取用户和项目 mcp.json，并控制工具暴露方式。package.json 中包含 pi-mcp 依赖。",
+        "problem": "设计解读：能力边界会演进，架构课需要给事实标上版本，不能把早期设计主张写成永久限制。",
+        "tradeoff": "设计解读：接入更多工具后仍需管理声明开销、按需发现和访问范围；支持协议并不保证任务更可靠。",
+        "borrow": "把产品对照表中的每个易变结论附直接文档链接和核验日期。",
+        "source_id": "pi-mcp",
+        "source_url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/mcp.md"
+      }
+    ],
+    "sources": [
+      {
+        "id": "pi-overview",
+        "title": "Pi README：定位与包分层",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/README.md"
+      },
+      {
+        "id": "pi-package",
+        "title": "Pi Coding Agent package.json：作者、名称与版本",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/package.json"
+      },
+      {
+        "id": "pi-cli",
+        "title": "Pi Command Line：默认工具与可选能力",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/cli.md"
+      },
+      {
+        "id": "pi-how",
+        "title": "How Pi Works：运行循环与上下文",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/how-pi-works.md"
+      },
+      {
+        "id": "pi-core",
+        "title": "Agent loop 源码：transformContext 与 convertToLlm",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/agent/src/agent-loop.ts"
+      },
+      {
+        "id": "pi-tools",
+        "title": "工具工厂源码：默认工具集合",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/src/core/tools/index.ts"
+      },
+      {
+        "id": "pi-session",
+        "title": "Session File Format：JSONL 会话树",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/session-format.md"
+      },
+      {
+        "id": "pi-compaction",
+        "title": "Compaction Reference：摘要、压缩与分支",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/compaction.md"
+      },
+      {
+        "id": "pi-extensions",
+        "title": "Extensions：可执行扩展与生命周期",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/extensions.md"
+      },
+      {
+        "id": "pi-sdk",
+        "title": "SDK：进程内集成与 SessionManager",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/sdk.md"
+      },
+      {
+        "id": "pi-rpc",
+        "title": "RPC Mode：JSONL 子进程集成",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/rpc.md"
+      },
+      {
+        "id": "pi-security",
+        "title": "Run Pi safely：项目信任与执行边界",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/security.md"
+      },
+      {
+        "id": "pi-mcp",
+        "title": "MCP Servers：当前内置支持与工具暴露",
+        "url": "https://github.com/earendil-works/pi/blob/ede2c9b468d8e061c557d16957513715e6d49cd6/packages/coding-agent/docs/mcp.md"
+      }
+    ],
+    "pitfalls": [
+      "把 Pi 与 Inflection 的同名聊天产品、oh-my-pi 分支或其他同名项目混淆。这里研究 Mario Zechner 创建的 Pi Coding Agent。",
+      "将极简解释为所有产品版本永久不支持 MCP、子代理、计划模式或更多工具。",
+      "把 cwd、project trust、工具 allowlist 或扩展确认弹窗当成完整的文件/网络/进程隔离。",
+      "因为完整 JSONL 历史仍在，就假定压缩后模型仍能使用所有原始事实。",
+      "把 agent_end 直接当成整个产品已空闲；恢复、排队工作或其他生命周期步骤可能继续处理。",
+      "把少工具天然等于更准确、更快或更便宜当成事实；这些需要同任务、同预算实验。",
+      "把我们课程中的问题解释、取舍和借鉴建议写成 Pi 作者的原话或公开性能结论。"
+    ]
+  },
+  {
+    "id": "opencode",
+    "agent": "OpenCode",
+    "title": "OpenCode V2：可配置的多端 Agent 运行时",
+    "checked_date": "2026-10-23",
+    "repo_revision": "3fda0e39a494c58f7866128067b637a540541434",
+    "principles": [
+      {
+        "title": "把客户端与执行运行时分开",
+        "fact": "V2 提供独立 HTTP API 和 @opencode/client；客户端负责调用服务与订阅事件，本地服务管理接口可发现、启动、停止后台服务。",
+        "problem": "终端、Web 与自定义产品需要共享同一运行时能力，而不把 UI 和执行循环绑死。",
+        "tradeoff": "我们的设计推论：接口复用提高可组合性，同时需要处理认证、取消、服务生命周期和重连。",
+        "source_url": "https://opencode.ai/v2/docs/build/client",
+        "evidence_type": "official_documentation"
+      },
+      {
+        "title": "Provider 抽象保留差异",
+        "fact": "V2 的 provider/model 目录来自 models.dev，支持配置自定义 provider、运行包、端点及模型；部分 settings 只有选中的运行包支持时才有效。",
+        "problem": "让同一 Agent 运行时连接不同模型供应商及部署。",
+        "tradeoff": "我们的设计推论：统一连接接口不能保证工具格式、推理特性、模型质量或成本相同；迁移仍需对照实验。",
+        "source_url": "https://opencode.ai/v2/docs/providers",
+        "evidence_type": "official_documentation"
+      },
+      {
+        "title": "Agent 是命名配置，不等于独立模型",
+        "fact": "V2 Agent 组合 system、模型偏好、permissions 和显示信息。Build/Plan 是 primary，General/Explore 是 subagent；子会话从新上下文开始，并使用自己的权限。",
+        "problem": "把不同任务的指令、工具范围和对话上下文明确分开。",
+        "tradeoff": "我们的设计推论：分工会增加上下文交接和调度成本，不能由子代理数量推断效果。",
+        "source_url": "https://opencode.ai/v2/docs/agents",
+        "evidence_type": "official_documentation"
+      },
+      {
+        "title": "Plan 不是操作系统沙箱",
+        "fact": "V2 Plan 以不修改普通项目文件为目标，但可以按要求写 OpenCode 计划文件；shell 仍受权限配置控制。V2 Build 默认允许工具和工作区外访问，敏感环境文件读取询问。",
+        "problem": "在探索与实施之间设置可配置的行为边界。",
+        "tradeoff": "我们的设计推论：必须检查有效权限与 shell 权限，不能把模式名称当作隔离保证。",
+        "source_url": "https://opencode.ai/v2/docs/agents",
+        "secondary_source_urls": [
+          "https://opencode.ai/v2/docs/tools",
+          "https://opencode.ai/v2/docs/permissions"
+        ],
+        "evidence_type": "official_documentation"
+      },
+      {
+        "title": "把权限决策放在显式规则层",
+        "fact": "V2 permissions 使用有序 action/resource/effect 三元规则，effect 为 allow、ask 或 deny；最后匹配生效，无匹配时 ask。全局与 Agent 规则按顺序组合。",
+        "problem": "让执行控制可检查，并减少只靠提示词要求守规矩的不确定性。",
+        "tradeoff": "我们的设计推论：规则次序和配置覆盖需要测试；工具权限不是系统级隔离，shell 仍具有宿主用户的权限。",
+        "source_url": "https://opencode.ai/v2/docs/permissions",
+        "secondary_source_urls": [
+          "https://opencode.ai/v2/docs/tools"
+        ],
+        "evidence_type": "official_documentation"
+      },
+      {
+        "title": "持久会话与模型上下文分开",
+        "fact": "固定源码中，SQLite 表 session_v2 存会话，session_message 存带序号的消息，另有 pending/inbox 和 instruction 表。会话历史读取按序号与 compaction 边界投影。",
+        "problem": "支持恢复、排队输入和历史查询，而不要求每次把全部历史发给模型。",
+        "tradeoff": "我们的设计推论：保存过的内容不等于当前模型可见内容；必须区分数据库状态和本次请求投影。",
+        "source_url": "https://github.com/anomalyco/opencode/blob/3fda0e39a494c58f7866128067b637a540541434/packages/core/src/session/sql.ts",
+        "secondary_source_urls": [
+          "https://github.com/anomalyco/opencode/blob/3fda0e39a494c58f7866128067b637a540541434/packages/core/src/session/history.ts"
+        ],
+        "evidence_type": "source_code_at_fixed_revision"
+      },
+      {
+        "title": "实时事件流不是可靠历史日志",
+        "fact": "V2 HTTP API 有 SSE 订阅；官方声明它是实时易失流，断线期间事件会错过，慢消费者可使流失败。JavaScript client 不提供历史重放或自动重连。",
+        "problem": "让 UI 及时展示任务、工具和权限状态，而不等待最终回答。",
+        "tradeoff": "我们的设计推论：重连后应通过会话与消息查询重新同步，不把“没收到事件”解释成“没有执行”。",
+        "source_url": "https://opencode.ai/v2/docs/build/client",
+        "secondary_source_urls": [
+          "https://opencode.ai/v2/docs/api"
+        ],
+        "evidence_type": "official_documentation"
+      },
+      {
+        "title": "压缩上下文，同时保存历史",
+        "fact": "V2 compaction 用摘要替代较早对话，并在摘要旁保留近期内容；它是有损的。更早的消息仍然存储。原生 provider checkpoint 的可移植性还受 provider/model 限制。",
+        "problem": "长会话持续超过模型可用上下文，同时保留当前工作的重要细节。",
+        "tradeoff": "我们的设计推论：应测摘要是否丢掉约束与依赖，不把恢复会话等同于恢复所有原始信息。",
+        "source_url": "https://opencode.ai/v2/docs/compaction",
+        "evidence_type": "official_documentation"
+      },
+      {
+        "title": "技能、工具、插件和 MCP 分层",
+        "fact": "V2 skills 加载任务指令；工具执行动作；MCP 可提供工具等能力；插件可从包或本地路径配置。MCP 工具会占用模型上下文。",
+        "problem": "在不把所有能力硬编码进核心循环的情况下扩展系统。",
+        "tradeoff": "我们的设计推论：按任务暴露需要的能力，分别核验工具权限、插件代码和指令来源，避免工具目录无限扩张。",
+        "source_url": "https://opencode.ai/v2/docs/mcp-servers",
+        "secondary_source_urls": [
+          "https://opencode.ai/v2/docs/tools",
+          "https://opencode.ai/v2/docs/plugins"
+        ],
+        "evidence_type": "official_documentation"
+      },
+      {
+        "title": "代码编排工具，减少中间结果进入上下文",
+        "fact": "V2 execute 的 Code Mode 用 JavaScript 组合工具调用，并允许筛选中间结果；内建和 MCP 工具仍执行各自权限检查。该运行时没有直接文件系统访问或 imports，但提供 fetch。",
+        "problem": "在多个工具调用与大型返回值之间减少反复模型往返和无关上下文。",
+        "tradeoff": "我们的设计推论：代码编排扩大控制流表达力，也需要追踪嵌套工具与真实边界；不能从“没有直接文件系统”推出没有网络能力。",
+        "source_url": "https://opencode.ai/v2/docs/tools",
+        "evidence_type": "official_documentation"
+      }
+    ],
+    "sources": [
+      {
+        "id": "oc-intro",
+        "title": "OpenCode V2 官方入口",
+        "url": "https://opencode.ai/v2/docs/",
+        "opened": true
+      },
+      {
+        "id": "oc-repo",
+        "title": "当前官方源码仓库",
+        "url": "https://github.com/anomalyco/opencode",
+        "opened": true
+      },
+      {
+        "id": "oc-old-redirect",
+        "title": "旧 SST 地址重定向",
+        "url": "https://github.com/sst/opencode",
+        "opened": true
+      },
+      {
+        "id": "oc-other-project",
+        "title": "另一个同名归档项目，现为 Crush",
+        "url": "https://github.com/opencode-ai/opencode",
+        "opened": true
+      },
+      {
+        "id": "oc-client",
+        "title": "V2 JavaScript client 与后台服务",
+        "url": "https://opencode.ai/v2/docs/build/client",
+        "opened": true
+      },
+      {
+        "id": "oc-api",
+        "title": "V2 HTTP API，含 session/message/SSE",
+        "url": "https://opencode.ai/v2/docs/api",
+        "opened": true
+      },
+      {
+        "id": "oc-agents",
+        "title": "V2 Agent 配置与 Build/Plan/Subagent",
+        "url": "https://opencode.ai/v2/docs/agents",
+        "opened": true
+      },
+      {
+        "id": "oc-permissions",
+        "title": "V2 有序权限规则",
+        "url": "https://opencode.ai/v2/docs/permissions",
+        "opened": true
+      },
+      {
+        "id": "oc-providers",
+        "title": "V2 Provider 与模型抽象",
+        "url": "https://opencode.ai/v2/docs/providers",
+        "opened": true
+      },
+      {
+        "id": "oc-compaction",
+        "title": "V2 上下文压缩与历史保留",
+        "url": "https://opencode.ai/v2/docs/compaction",
+        "opened": true
+      },
+      {
+        "id": "oc-tools",
+        "title": "V2 工具、权限与 Code Mode",
+        "url": "https://opencode.ai/v2/docs/tools",
+        "opened": true
+      },
+      {
+        "id": "oc-plugins",
+        "title": "V2 插件配置",
+        "url": "https://opencode.ai/v2/docs/plugins",
+        "opened": true
+      },
+      {
+        "id": "oc-mcp",
+        "title": "V2 MCP 接入与上下文代价",
+        "url": "https://opencode.ai/v2/docs/mcp-servers",
+        "opened": true
+      },
+      {
+        "id": "oc-storage-code",
+        "title": "固定版本的会话和消息 SQLite schema",
+        "url": "https://github.com/anomalyco/opencode/blob/3fda0e39a494c58f7866128067b637a540541434/packages/core/src/session/sql.ts",
+        "opened": true
+      },
+      {
+        "id": "oc-history-code",
+        "title": "固定版本的会话历史投影",
+        "url": "https://github.com/anomalyco/opencode/blob/3fda0e39a494c58f7866128067b637a540541434/packages/core/src/session/history.ts",
+        "opened": true
+      },
+      {
+        "id": "oc-step-code",
+        "title": "固定版本的模型/工具执行步骤",
+        "url": "https://github.com/anomalyco/opencode/blob/3fda0e39a494c58f7866128067b637a540541434/packages/core/src/session/runner/step.ts",
+        "opened": true
+      }
+    ],
+    "pitfalls": [
+      "不要混淆 anomalyco/opencode 与 opencode-ai/opencode/Crush。",
+      "不要把 V1 的 agent/permission/bash/task 字段当作 V2 的 agents/permissions/shell/subagent。",
+      "不要把 README 的历史 Plan 文字当作精确权限规范；以 V2 agents/permissions 文档与有效配置为准。",
+      "Plan 可以写计划文件，shell 权限单独控制；计划模式不能代替系统沙箱。",
+      "V2 内置 General/Explore，没有内置 Scout；V1 文档列出的 Scout 不应移植到 V2 课件。",
+      "不要把 SSE 当可重放的持久事件日志，也不要用没有收到事件来判定未执行。",
+      "Provider 可切换不代表能力、隐私、额度或行为一致；没有对比实验就不排名性能。",
+      "来源事实、我们的架构推论、模拟互动和本机实测应分别标记。"
+    ]
+  }
+]

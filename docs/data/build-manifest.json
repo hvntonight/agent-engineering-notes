@@ -1,0 +1,27 @@
+{
+  "version": "2026.10.24-v2",
+  "files": {
+    ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "assets/app.js": "2f61ecc10865ddc7388f4efe2c80a19205229aa2b6b56525752fa7202dda4f63",
+    "assets/icon.svg": "621deac5dd574c0b8d58d5132feb08e419dd4157d58189d7e15d556ca61eb486",
+    "assets/labs.js": "c91e65c46a15f106f7227ff26cd83ceafc7c582079be9b45da37b02dbeaaafad",
+    "assets/math.js": "314e0894e22c68521490bfc7ec5a72592cb9b89715c2e217aa435f34493ab8a3",
+    "assets/state.js": "5cb65bfa77ab4596b058d3dd86255a3b52e1ed332b26fcca62597db166c19782",
+    "assets/styles.css": "d0d6df3e24e46c6b006b6a462ab1b210772026b1e6b5db235b7a0e211437c26e",
+    "data/agents.json": "0742ebf1ffd307848b7b9d19c8d4527358fffa91743be4d34eaec859458048dd",
+    "data/course.json": "a9d86c57b629fb3f3a00215dd27f82b77573ad9e41ab77b3f40012b7fc39d5d5",
+    "data/experiments.json": "22d4736150a0c84aad5cd9253671f819825f6a818324b7106b854b4d38c6967a",
+    "index.html": "86dea8bbe238bdf5ad658b15f72c682d2b2f6111f2d3bc685868c4c79630eb8f",
+    "lab/README.md": "e78533b9c87cfcdc3e4d2823b0f9e6fd787aba6f93fe06c684b812e99ac4fe30",
+    "lab/add_documents.py": "c4eaa4910b13400f82b503ac290874e517082a8b1d49d9fe743904a18fa96f84",
+    "lab/agent-lab.zip": "954fc6511ff2b525d6db70dc4abc05db00a24a311b065f0b3da3b9d48616447f",
+    "lab/agent_lab/__init__.py": "176c57c26fc5382b490f6a848677ebc4a6e27221883a0c653e1fff161c1b9bcd",
+    "lab/agent_lab/agent.py": "423276a9be8b38bc3af6cbc6eb138597a4ff1a2b577462758f3badb59fb82d57",
+    "lab/agent_lab/backend.py": "db42ee8ef6a2369445815c8ed6e0dfb0bf073676a9f0b6ab7bcfabf45598f3b8",
+    "lab/agent_lab/tools.py": "58b78e1a9f682b0bf6b3fd5e00f005caba50308bdae6fdb34449ece36bd2e75b",
+    "lab/run.py": "4cc8ae58a7abb0fc3c96da075f497d303242b5425da46275e062bc124540f871",
+    "lab/task.json": "2e2978847086026ad0e6be5fddfe83224498d52b82b61219defdfede4286dfc2"
+  },
+  "chapters": 8,
+  "tutorial_cases": 14
+}

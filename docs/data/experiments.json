@@ -1,0 +1,1208 @@
+{
+  "trials": [
+    {
+      "id": "pilot-20261023:0",
+      "run": "pilot-20261023",
+      "question": "As of 2026-10-23, how many days is the approved retention period for project KESTREL? Use the signed policy effective on that date; ignore unsigned comments and future policies. Return only the number and cite the applicable signed policy document id.",
+      "case_id": "docs-effective-policy",
+      "mode": "checked",
+      "status": "finished",
+      "answer": "17",
+      "citations": [
+        "kestrel-policy-current"
+      ],
+      "usage": {
+        "input_tokens": 15222,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 35,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 11.271136292999927,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "17",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "17",
+            "citations": [
+              "kestrel-policy-current"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:1",
+      "run": "pilot-20261023",
+      "question": "As of 2026-10-23, how many days is the approved retention period for project KESTREL? Use the signed policy effective on that date; ignore unsigned comments and future policies. Return only the number and cite the applicable signed policy document id.",
+      "case_id": "docs-effective-policy",
+      "mode": "tools",
+      "status": "finished",
+      "answer": "17",
+      "citations": [
+        "kestrel-policy-current"
+      ],
+      "usage": {
+        "input_tokens": 15204,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 35,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 9.287557827,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "17",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "17",
+            "citations": [
+              "kestrel-policy-current"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:2",
+      "run": "pilot-20261023",
+      "question": "Compute the exact integer product 64590252791684086305100731 * 66790138432866426856367962. Return all digits.",
+      "case_id": "math-large",
+      "mode": "tools",
+      "status": "finished",
+      "answer": "4313991925370417312407424035634688534888629211180222",
+      "citations": [
+        "calc:1"
+      ],
+      "usage": {
+        "input_tokens": 20506,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 98,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 13.704534740999861,
+      "model_calls": 2,
+      "tool_calls": 1,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "4313991925370417312407424035634688534888629211180222",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "calculate",
+            "argument": "64590252791684086305100731 * 66790138432866426856367962",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": true,
+            "id": "calc:1",
+            "expression": "64590252791684086305100731 * 66790138432866426856367962",
+            "value": "4313991925370417312407424035634688534888629211180222"
+          }
+        },
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "4313991925370417312407424035634688534888629211180222",
+            "citations": [
+              "calc:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:3",
+      "run": "pilot-20261023",
+      "question": "Compute exactly: (187 * 43 - 29 * 17) / 6. Return only the number.",
+      "case_id": "math-small",
+      "mode": "checked",
+      "status": "finished",
+      "answer": "1258",
+      "citations": [
+        "calc:1"
+      ],
+      "usage": {
+        "input_tokens": 20504,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 119,
+        "reasoning_output_tokens": 40
+      },
+      "elapsed_s": 15.762535321999621,
+      "model_calls": 2,
+      "tool_calls": 1,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "1258",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "calculate",
+            "argument": "(187 * 43 - 29 * 17) / 6",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": true,
+            "id": "calc:1",
+            "expression": "(187 * 43 - 29 * 17) / 6",
+            "value": "1258"
+          }
+        },
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "1258",
+            "citations": [
+              "calc:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:4",
+      "run": "pilot-20261023",
+      "question": "A warehouse initially has 411 boxes with 152 units each. It ships 11260 units, then receives 708 returned units, all of which are resellable. It discards 152 damaged units from the remaining stock. The manager is 43 years old. How many resellable units remain? Return only the integer.",
+      "case_id": "math-inventory",
+      "mode": "tools",
+      "status": "finished",
+      "answer": "51768",
+      "citations": [
+        "calc:1"
+      ],
+      "usage": {
+        "input_tokens": 20552,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 118,
+        "reasoning_output_tokens": 40
+      },
+      "elapsed_s": 20.73946336200015,
+      "model_calls": 2,
+      "tool_calls": 1,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "51768",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "calculate",
+            "argument": "411 * 152 - 11260 + 708 - 152",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": true,
+            "id": "calc:1",
+            "expression": "411 * 152 - 11260 + 708 - 152",
+            "value": "51768"
+          }
+        },
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "51768",
+            "citations": [
+              "calc:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:5",
+      "run": "pilot-20261023",
+      "question": "For project LANTERN, what exact artifact is approved for recovery in the currently pinned incident runbook? Follow the incident -> pinned runbook -> release record chain. Return only the artifact identifier and cite all three supporting document ids.",
+      "case_id": "docs-multihop",
+      "mode": "direct",
+      "status": "finished",
+      "answer": "aurora-2026.10.17",
+      "citations": [
+        "incident-lantern",
+        "runbook-rb731",
+        "release-rel842"
+      ],
+      "usage": {
+        "input_tokens": 15175,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 52,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 10.447350668000126,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "aurora-2026.10.17",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "aurora-2026.10.17",
+            "citations": [
+              "incident-lantern",
+              "runbook-rb731",
+              "release-rel842"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:6",
+      "run": "pilot-20261023",
+      "question": "For project LANTERN, what exact artifact is approved for recovery in the currently pinned incident runbook? Follow the incident -> pinned runbook -> release record chain. Return only the artifact identifier and cite all three supporting document ids.",
+      "case_id": "docs-multihop",
+      "mode": "checked",
+      "status": "finished",
+      "answer": "aurora-2026.10.17",
+      "citations": [
+        "incident-lantern",
+        "runbook-rb731",
+        "release-rel842"
+      ],
+      "usage": {
+        "input_tokens": 15191,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 52,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 8.931548412000211,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "aurora-2026.10.17",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "aurora-2026.10.17",
+            "citations": [
+              "incident-lantern",
+              "runbook-rb731",
+              "release-rel842"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:7",
+      "run": "pilot-20261023",
+      "question": "Compute exactly: (187 * 43 - 29 * 17) / 6. Return only the number.",
+      "case_id": "math-small",
+      "mode": "tools",
+      "status": "finished",
+      "answer": "1258",
+      "citations": [],
+      "usage": {
+        "input_tokens": 10189,
+        "cached_input_tokens": 7936,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 61,
+        "reasoning_output_tokens": 29
+      },
+      "elapsed_s": 8.196832705999896,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "1258",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "1258",
+            "citations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:8",
+      "run": "pilot-20261023",
+      "question": "What is project NOVA's contractual uptime percentage? Only a signed contract is authoritative. If the supplied evidence does not establish it, answer INSUFFICIENT_EVIDENCE. Otherwise return only the percentage number, without the percent sign, and cite the contract.",
+      "case_id": "docs-missing",
+      "mode": "direct",
+      "status": "finished",
+      "answer": "INSUFFICIENT_EVIDENCE",
+      "citations": [],
+      "usage": {
+        "input_tokens": 10285,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 35,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 6.9546778390003965,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "INSUFFICIENT_EVIDENCE",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "INSUFFICIENT_EVIDENCE",
+            "citations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:9",
+      "run": "pilot-20261023",
+      "question": "Compute exactly: (187 * 43 - 29 * 17) / 6. Return only the number.",
+      "case_id": "math-small",
+      "mode": "direct",
+      "status": "finished",
+      "answer": "1258",
+      "citations": [],
+      "usage": {
+        "input_tokens": 10191,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 52,
+        "reasoning_output_tokens": 20
+      },
+      "elapsed_s": 5.729767662000086,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "1258",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "1258",
+            "citations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:10",
+      "run": "pilot-20261023",
+      "question": "For project LANTERN, what exact artifact is approved for recovery in the currently pinned incident runbook? Follow the incident -> pinned runbook -> release record chain. Return only the artifact identifier and cite all three supporting document ids.",
+      "case_id": "docs-multihop",
+      "mode": "tools",
+      "status": "finished",
+      "answer": "aurora-2026.10.17",
+      "citations": [
+        "incident-lantern",
+        "runbook-rb731",
+        "release-rel842"
+      ],
+      "usage": {
+        "input_tokens": 15171,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 52,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 8.535279871000057,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "aurora-2026.10.17",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "aurora-2026.10.17",
+            "citations": [
+              "incident-lantern",
+              "runbook-rb731",
+              "release-rel842"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:11",
+      "run": "pilot-20261023",
+      "question": "As of 2026-10-23, how many days is the approved retention period for project KESTREL? Use the signed policy effective on that date; ignore unsigned comments and future policies. Return only the number and cite the applicable signed policy document id.",
+      "case_id": "docs-effective-policy",
+      "mode": "direct",
+      "status": "finished",
+      "answer": "17",
+      "citations": [
+        "kestrel-policy-current"
+      ],
+      "usage": {
+        "input_tokens": 15208,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 35,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 13.536717901999964,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "17",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "17",
+            "citations": [
+              "kestrel-policy-current"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:12",
+      "run": "pilot-20261023",
+      "question": "Compute the exact integer product 64590252791684086305100731 * 66790138432866426856367962. Return all digits.",
+      "case_id": "math-large",
+      "mode": "direct",
+      "status": "finished",
+      "answer": "4313991925370417312407424035634688534888629211180222",
+      "citations": [],
+      "usage": {
+        "input_tokens": 10202,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1192,
+        "reasoning_output_tokens": 1144
+      },
+      "elapsed_s": 43.1430501699997,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "4313991925370417312407424035634688534888629211180222",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "4313991925370417312407424035634688534888629211180222",
+            "citations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:13",
+      "run": "pilot-20261023",
+      "question": "Compute the exact integer product 64590252791684086305100731 * 66790138432866426856367962. Return all digits.",
+      "case_id": "math-large",
+      "mode": "checked",
+      "status": "finished",
+      "answer": "4313991925370417312407424035634688534888629211180222",
+      "citations": [
+        "calc:1"
+      ],
+      "usage": {
+        "input_tokens": 20538,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 98,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 19.354047333999915,
+      "model_calls": 2,
+      "tool_calls": 1,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "4313991925370417312407424035634688534888629211180222",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "calculate",
+            "argument": "64590252791684086305100731 * 66790138432866426856367962",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": true,
+            "id": "calc:1",
+            "expression": "64590252791684086305100731 * 66790138432866426856367962",
+            "value": "4313991925370417312407424035634688534888629211180222"
+          }
+        },
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "4313991925370417312407424035634688534888629211180222",
+            "citations": [
+              "calc:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:14",
+      "run": "pilot-20261023",
+      "question": "What is project NOVA's contractual uptime percentage? Only a signed contract is authoritative. If the supplied evidence does not establish it, answer INSUFFICIENT_EVIDENCE. Otherwise return only the percentage number, without the percent sign, and cite the contract.",
+      "case_id": "docs-missing",
+      "mode": "tools",
+      "status": "finished",
+      "answer": "INSUFFICIENT_EVIDENCE",
+      "citations": [],
+      "usage": {
+        "input_tokens": 10283,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 35,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 8.986204553000334,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "INSUFFICIENT_EVIDENCE",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "INSUFFICIENT_EVIDENCE",
+            "citations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:15",
+      "run": "pilot-20261023",
+      "question": "A warehouse initially has 411 boxes with 152 units each. It ships 11260 units, then receives 708 returned units, all of which are resellable. It discards 152 damaged units from the remaining stock. The manager is 43 years old. How many resellable units remain? Return only the integer.",
+      "case_id": "math-inventory",
+      "mode": "direct",
+      "status": "finished",
+      "answer": "51768",
+      "citations": [],
+      "usage": {
+        "input_tokens": 10235,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 60,
+        "reasoning_output_tokens": 28
+      },
+      "elapsed_s": 7.250515726999765,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "51768",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "51768",
+            "citations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:16",
+      "run": "pilot-20261023",
+      "question": "What is project NOVA's contractual uptime percentage? Only a signed contract is authoritative. If the supplied evidence does not establish it, answer INSUFFICIENT_EVIDENCE. Otherwise return only the percentage number, without the percent sign, and cite the contract.",
+      "case_id": "docs-missing",
+      "mode": "checked",
+      "status": "finished",
+      "answer": "INSUFFICIENT_EVIDENCE",
+      "citations": [],
+      "usage": {
+        "input_tokens": 10303,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 35,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 8.716031250000015,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "INSUFFICIENT_EVIDENCE",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "INSUFFICIENT_EVIDENCE",
+            "citations": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "pilot-20261023:17",
+      "run": "pilot-20261023",
+      "question": "A warehouse initially has 411 boxes with 152 units each. It ships 11260 units, then receives 708 returned units, all of which are resellable. It discards 152 damaged units from the remaining stock. The manager is 43 years old. How many resellable units remain? Return only the integer.",
+      "case_id": "math-inventory",
+      "mode": "checked",
+      "status": "finished",
+      "answer": "51768",
+      "citations": [
+        "calc:1"
+      ],
+      "usage": {
+        "input_tokens": 20588,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 76,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 16.66511908199982,
+      "model_calls": 2,
+      "tool_calls": 1,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "51768",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "calculate",
+            "argument": "411 * 152 - 11260 + 708 - 152",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": true,
+            "id": "calc:1",
+            "expression": "411 * 152 - 11260 + 708 - 152",
+            "value": "51768"
+          }
+        },
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "51768",
+            "citations": [
+              "calc:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "retrieval-20261023:0",
+      "run": "retrieval-20261023",
+      "question": "For project LANTERN, what exact artifact is approved for recovery in the currently pinned incident runbook? Follow the incident -> pinned runbook -> release record chain. Return only the artifact identifier and cite all three supporting document ids.",
+      "case_id": "docs-multihop",
+      "mode": "tools",
+      "status": "finished",
+      "answer": "aurora-2026.10.17",
+      "citations": [
+        "incident-lantern",
+        "runbook-rb731",
+        "release-rel842"
+      ],
+      "usage": {
+        "input_tokens": 31174,
+        "cached_input_tokens": 7936,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 118,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 25.465015617000063,
+      "model_calls": 3,
+      "tool_calls": 2,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "aurora-2026.10.17",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "search",
+            "argument": "LANTERN incident pinned runbook",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": true,
+            "hits": [
+              {
+                "id": "incident-lantern",
+                "text": "Project LANTERN. Current incident pins runbook RB-731. An older RB-612 is superseded.",
+                "score": 3
+              },
+              {
+                "id": "runbook-rb612",
+                "text": "SUPERSEDED runbook RB-612. Previously approved artifact aurora-2026.08.01.",
+                "score": 1
+              },
+              {
+                "id": "runbook-rb731",
+                "text": "Runbook RB-731. Recovery artifact must come from signed release record REL-842, field approved_artifact.",
+                "score": 1
+              }
+            ]
+          }
+        },
+        {
+          "action": {
+            "action": "search",
+            "argument": "REL-842",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": true,
+            "hits": [
+              {
+                "id": "release-rel842",
+                "text": "Signed release REL-842: approved_artifact=aurora-2026.10.17. candidate_artifact=aurora-2026.10.22 is NOT approved.",
+                "score": 1
+              },
+              {
+                "id": "runbook-rb731",
+                "text": "Runbook RB-731. Recovery artifact must come from signed release record REL-842, field approved_artifact.",
+                "score": 1
+              }
+            ]
+          }
+        },
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "aurora-2026.10.17",
+            "citations": [
+              "incident-lantern",
+              "runbook-rb731",
+              "release-rel842"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "context-full-1024-20261023:0",
+      "run": "context-full-1024-20261023",
+      "question": "For project LANTERN, what exact artifact is approved for recovery in the currently pinned incident runbook? Follow the incident -> pinned runbook -> release record chain. Return only the artifact identifier and cite all three supporting document ids.",
+      "case_id": "docs-multihop",
+      "mode": "tools",
+      "status": "finished",
+      "answer": "aurora-2026.10.17",
+      "citations": [
+        "incident-lantern",
+        "runbook-rb731",
+        "release-rel842"
+      ],
+      "usage": {
+        "input_tokens": 61593,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 52,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 9.46798158599995,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "aurora-2026.10.17",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "aurora-2026.10.17",
+            "citations": [
+              "incident-lantern",
+              "runbook-rb731",
+              "release-rel842"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "context-indexed-1024-20261023:0",
+      "run": "context-indexed-1024-20261023",
+      "question": "For project LANTERN, what exact artifact is approved for recovery in the currently pinned incident runbook? Follow the incident -> pinned runbook -> release record chain. Return only the artifact identifier and cite all three supporting document ids.",
+      "case_id": "docs-multihop",
+      "mode": "tools",
+      "status": "finished",
+      "answer": "aurora-2026.10.17",
+      "citations": [
+        "incident-lantern",
+        "runbook-rb731",
+        "release-rel842"
+      ],
+      "usage": {
+        "input_tokens": 31175,
+        "cached_input_tokens": 7936,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 118,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 30.57797035700014,
+      "model_calls": 3,
+      "tool_calls": 2,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "aurora-2026.10.17",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "search",
+            "argument": "LANTERN incident pinned runbook",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": true,
+            "hits": [
+              {
+                "id": "incident-lantern",
+                "text": "Project LANTERN. Current incident pins runbook RB-731. An older RB-612 is superseded.",
+                "score": 3
+              },
+              {
+                "id": "runbook-rb612",
+                "text": "SUPERSEDED runbook RB-612. Previously approved artifact aurora-2026.08.01.",
+                "score": 1
+              },
+              {
+                "id": "runbook-rb731",
+                "text": "Runbook RB-731. Recovery artifact must come from signed release record REL-842, field approved_artifact.",
+                "score": 1
+              }
+            ]
+          }
+        },
+        {
+          "action": {
+            "action": "search",
+            "argument": "REL-842",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": true,
+            "hits": [
+              {
+                "id": "release-rel842",
+                "text": "Signed release REL-842: approved_artifact=aurora-2026.10.17. candidate_artifact=aurora-2026.10.22 is NOT approved.",
+                "score": 1
+              },
+              {
+                "id": "runbook-rb731",
+                "text": "Runbook RB-731. Recovery artifact must come from signed release record REL-842, field approved_artifact.",
+                "score": 1
+              }
+            ]
+          }
+        },
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "aurora-2026.10.17",
+            "citations": [
+              "incident-lantern",
+              "runbook-rb731",
+              "release-rel842"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "recovery-20261023:0",
+      "run": "recovery-20261023",
+      "question": "A warehouse initially has 411 boxes with 152 units each. It ships 11260 units, then receives 708 returned units, all of which are resellable. It discards 152 damaged units from the remaining stock. The manager is 43 years old. How many resellable units remain? Return only the integer.",
+      "case_id": "math-inventory",
+      "mode": "checked",
+      "status": "finished",
+      "answer": "51768",
+      "citations": [
+        "calc:1"
+      ],
+      "usage": {
+        "input_tokens": 30972,
+        "cached_input_tokens": 15872,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 118,
+        "reasoning_output_tokens": 0
+      },
+      "elapsed_s": 24.391405632999977,
+      "model_calls": 3,
+      "tool_calls": 2,
+      "grade": {
+        "answer_correct": true,
+        "required_citations_ok": true,
+        "task_success": true,
+        "expected": "51768",
+        "missing_citations": []
+      },
+      "trace": [
+        {
+          "action": {
+            "action": "calculate",
+            "argument": "411 * 152 - 11260 + 708 - 152",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": false,
+            "error": "TEMPORARY_UNAVAILABLE",
+            "retryable": true
+          }
+        },
+        {
+          "action": {
+            "action": "calculate",
+            "argument": "411 * 152 - 11260 + 708 - 152",
+            "answer": "",
+            "citations": []
+          },
+          "observation": {
+            "ok": true,
+            "id": "calc:1",
+            "expression": "411 * 152 - 11260 + 708 - 152",
+            "value": "51768"
+          }
+        },
+        {
+          "action": {
+            "action": "finish",
+            "argument": "",
+            "answer": "51768",
+            "citations": [
+              "calc:1"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "id": "pilot-20261023",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "context": "full",
+      "started_utc": "2026-10-23T15:30:17.709067+00:00",
+      "source_sha256": "5d5b2cf58ac21e56feedc125b0d9015bc49c50527b64dfe725b1760941e7342b",
+      "dataset_sha256": "7a36ddb27a0a565c0e0cc840679040f3e871885c35d60fd67afae21ad1b1f5fc",
+      "case_sizes": [
+        {
+          "id": "math-small",
+          "documents": 0,
+          "document_characters": 0
+        },
+        {
+          "id": "math-large",
+          "documents": 0,
+          "document_characters": 0
+        },
+        {
+          "id": "math-inventory",
+          "documents": 0,
+          "document_characters": 0
+        },
+        {
+          "id": "docs-effective-policy",
+          "documents": 100,
+          "document_characters": 15992
+        },
+        {
+          "id": "docs-multihop",
+          "documents": 100,
+          "document_characters": 15919
+        },
+        {
+          "id": "docs-missing",
+          "documents": 2,
+          "document_characters": 181
+        }
+      ]
+    },
+    {
+      "id": "retrieval-20261023",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "context": "indexed",
+      "started_utc": "2026-10-23T15:34:29.977919+00:00",
+      "source_sha256": "68122b9c806d5f1eb97987bec1efdfb4bba1b4534072e636d5d35eb0c3ddd653",
+      "dataset_sha256": "1fa46c65b89866e5b3cfbdec2630f76435e90b693e80a18938339f7f69cce8ae",
+      "case_sizes": [
+        {
+          "id": "docs-multihop",
+          "documents": 100,
+          "document_characters": 15919
+        }
+      ]
+    },
+    {
+      "id": "context-full-1024-20261023",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "context": "full",
+      "started_utc": "2026-10-23T15:35:33.088779+00:00",
+      "source_sha256": "68122b9c806d5f1eb97987bec1efdfb4bba1b4534072e636d5d35eb0c3ddd653",
+      "dataset_sha256": "bca46db57d097e6ea6953922a6965e1a37ab65877ee6ac680f7e44ef6e2fc597",
+      "case_sizes": [
+        {
+          "id": "docs-multihop",
+          "documents": 1028,
+          "document_characters": 167203
+        }
+      ]
+    },
+    {
+      "id": "context-indexed-1024-20261023",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "context": "indexed",
+      "started_utc": "2026-10-23T15:36:32.307718+00:00",
+      "source_sha256": "68122b9c806d5f1eb97987bec1efdfb4bba1b4534072e636d5d35eb0c3ddd653",
+      "dataset_sha256": "bca46db57d097e6ea6953922a6965e1a37ab65877ee6ac680f7e44ef6e2fc597",
+      "case_sizes": [
+        {
+          "id": "docs-multihop",
+          "documents": 1028,
+          "document_characters": 167203
+        }
+      ]
+    },
+    {
+      "id": "recovery-20261023",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "context": "full",
+      "started_utc": "2026-10-23T15:37:20.227179+00:00",
+      "source_sha256": "68122b9c806d5f1eb97987bec1efdfb4bba1b4534072e636d5d35eb0c3ddd653",
+      "dataset_sha256": "d6c6dc9284cec2f08fd8da77a7817f936a91df1d4673268fa41f1c4c6312b66f",
+      "case_sizes": [
+        {
+          "id": "math-inventory",
+          "documents": 0,
+          "document_characters": 0
+        }
+      ]
+    }
+  ]
+}

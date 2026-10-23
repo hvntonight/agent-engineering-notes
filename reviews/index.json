@@ -1,0 +1,44 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "date": "2026-10-24",
+      "focus": "内容、练习与事实对应",
+      "result": "发现并修复三项问题；22 条历史记录与原始结果逐字段一致。",
+      "changes": [
+        "把数值正确、引用一致和任务通过分开；补上缺引用、伪引用和错误公式反例。",
+        "增加资料规模/位置生成器、真实模型命令与用量读取指引，明确 scripted 没有 token 测量。",
+        "把中途修订单标为待扩展的设计作业，给出接口契约，避免将输入变体说成中途更新。"
+      ],
+      "evidence": {
+        "review_file": "reviews/round-1-findings.json",
+        "historical_trials_compared": 22,
+        "javascript_unit_checks": 8,
+        "python_contract_checks": 6,
+        "new_model_calls": 0
+      }
+    },
+    {
+      "round": 2,
+      "date": "2026-10-24",
+      "focus": "交互、移动端与可读性",
+      "result": "54 项浏览器检查通过；7 个代表页面的自动无障碍规则未发现违规。",
+      "changes": [
+        "修复实验重绘后键盘焦点丢失。",
+        "为对比图保留可逐项读取的文本与数值。",
+        "修正小字对比度，检查笔记导入导出、子路径下载与三个屏幕宽度。"
+      ],
+      "evidence": {
+        "review_file": "reviews/round-2-findings.json",
+        "browser_checks_passed": 54,
+        "accessibility_pages_checked": 7,
+        "automated_accessibility_violations": 0,
+        "layout_widths_px": [
+          390,
+          768,
+          1440
+        ]
+      }
+    }
+  ]
+}
