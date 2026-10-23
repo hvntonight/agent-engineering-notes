@@ -23,3 +23,4 @@
 .contents-row p,.examples button,.calculation-output>span,.page-toc>span,.lab-toolbar>label,.implementation-tabs button{color:#4c6c3a}
 .local-note,.reference-card details p,.source-link{color:#4e6e3c}
 .dependency-chain span,.dependency-chain small{color:#4c6b36}.dependency-chain>div.stale small{color:#80572e}.note-card header>span{color:#506f3c}
+#notice{transition:transform .15s}
