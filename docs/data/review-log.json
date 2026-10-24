@@ -66,7 +66,7 @@
       "version": "2026.10.24-v3-animation",
       "date": "2026-10-24",
       "title": "动画版的三项检查",
-      "result": "内容核对与本地交互已通过，公网验证正在进行。",
+      "result": "三项检查全部完成：内容与来源核对、本地交互回归、公网发布与资源一致性。",
       "review_file": "reviews/animation-review.json",
       "checks": [
         {
@@ -79,7 +79,7 @@
         },
         {
           "focus": "公网发布",
-          "result": "正在验证最终 Pages 构建与线上交互。"
+          "result": "公网 65 项动画检查通过；23 个资源哈希与 55 个公开源码文件吻合，HTTPS 与下载包验证通过。"
         }
       ]
     }

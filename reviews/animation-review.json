@@ -1,7 +1,7 @@
 {
   "version": "2026.10.24-v3-animation",
   "date": "2026-10-24",
-  "status": "public_verification_pending",
+  "status": "complete",
   "scope": "8 段动画与四家公开架构；在已有课件上增量实现。",
   "rounds": [
     {
@@ -44,9 +44,41 @@
     {
       "round": 3,
       "focus": "公网发布与资源一致性",
-      "status": "pending",
-      "evidence": {},
-      "changes": []
+      "status": "passed",
+      "evidence": {
+        "public_url": "https://hvntonight.github.io/agent-engineering-notes/#animations",
+        "public_animation_browser_checks_passed": 65,
+        "automated_accessibility_states": 14,
+        "automated_accessibility_violations": 0,
+        "review_page_accessibility_violations": 0,
+        "manifest_asset_hashes_matched": 23,
+        "expected_local_build_matched": true,
+        "remote_source_files_matched": 55,
+        "unexpected_remote_files": 0,
+        "pages_source": "main /docs",
+        "https_enforced": true,
+        "build_status": "built",
+        "verified_content_commit": "e799f6d13390dd925d36371a4d35f18133a06a19",
+        "downloaded_lab_paths_checked": 3,
+        "new_model_calls": 0
+      },
+      "findings": [
+        {
+          "issue": "公开源码的允许列表遗漏了 .mjs，README 中的浏览器测试命令缺少对应脚本。",
+          "resolution": "补全扩展名，同时核对扫描与发布的文件集合；远端 55 个文件逐一匹配。",
+          "status": "closed"
+        },
+        {
+          "issue": "更新来源分支会自动构建，再额外请求一次构建会取消同批部署，产生干扰状态。",
+          "resolution": "发布客户端依赖分支更新自动触发 Pages，移除重复构建请求；最终构建与 HTTPS 单独核验。",
+          "status": "closed"
+        }
+      ],
+      "changes": [
+        "在公网重新跑完所有动画交互、四种架构、变体、键盘、全屏与减少动态效果检查。",
+        "核对 23 个资源哈希和完整公开源码；实际运行公网下载的实验包。",
+        "保留旧三轮记录，新增动画版记录，避免把同一轮回归重复计数。"
+      ]
     }
   ],
   "reviewed_sha256": {
