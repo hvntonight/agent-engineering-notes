@@ -1,0 +1,66 @@
+{
+  "version": "2026.10.24-v3-animation",
+  "date": "2026-10-24",
+  "status": "public_verification_pending",
+  "scope": "8 段动画与四家公开架构；在已有课件上增量实现。",
+  "rounds": [
+    {
+      "round": 1,
+      "focus": "内容与数据",
+      "status": "passed",
+      "evidence": {
+        "javascript_unit_checks_passed": 15,
+        "saved_real_trials_retained": 22,
+        "new_model_calls": 0,
+        "architecture_nodes_have_direct_sources": true
+      },
+      "changes": [
+        "真实恢复、上下文与评测从既有记录读取，未补造动作或逐次 token 分摊。",
+        "对照错误公式、未完成状态与漏失效的反例。",
+        "失效节点明确显示待复算，同时保留 v1/v2 来源标记。"
+      ]
+    },
+    {
+      "round": 2,
+      "focus": "本地交互、布局与可读性",
+      "status": "passed",
+      "evidence": {
+        "animation_browser_checks_passed": 65,
+        "legacy_browser_checks_passed": 54,
+        "automated_accessibility_states": 21,
+        "automated_accessibility_violations": 0,
+        "layout_widths_px": [
+          390,
+          768,
+          1440
+        ]
+      },
+      "changes": [
+        "播放控制放在图示之前，便于手机先开始再阅读。",
+        "逐项操作暂停、单步、拖动、倍速、全屏、节点来源和变体选择。",
+        "检查离开视野与路由后暂停、清理动画循环，以及系统减少动态效果的偏好。"
+      ]
+    },
+    {
+      "round": 3,
+      "focus": "公网发布与资源一致性",
+      "status": "pending",
+      "evidence": {},
+      "changes": []
+    }
+  ],
+  "reviewed_sha256": {
+    "docs/assets/motion-data.js": "e34bcc247a9f644d04fbdabd722741aaad2495acae16b01303e0a68e30d237b4",
+    "docs/assets/motion.js": "6b8b965d2ca95dd6360c2d2444994bfdd4787a7569866328a25e58d1918e49ef",
+    "docs/assets/motion.css": "5cb3f74ce7470c848c30481a74e012ea35f0e75095f2a33edc1839ee60a05752",
+    "docs/assets/app.js": "4376be715a723e8d6fd418ab6b6cdf349ca4600de21c9ab78260fb18ba55e27f",
+    "src/course.py": "03d8cf27686e7021603f2ecd4d589c8cfbdc8d240d9cc6f7a893b828b85e5f86",
+    "src/experiments.json": "22d4736150a0c84aad5cd9253671f819825f6a818324b7106b854b4d38c6967a",
+    "src/agents.json": "0742ebf1ffd307848b7b9d19c8d4527358fffa91743be4d34eaec859458048dd"
+  },
+  "limits": [
+    "自动无障碍检查不替代真人读屏测试。",
+    "动画没有新增模型成绩，架构图是公开资料的教学抽象。",
+    "真实实验仍是既有小规模合成开发试验。"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "title": "Agent 工程笔记",
-  "version": "2026.10.24-v2",
+  "version": "2026.10.24-v3-animation",
   "subtitle": "用一个库存核对任务，学习循环、工具、状态和评测。",
   "repo": "https://github.com/hvntonight/agent-engineering-notes",
   "public_url": "https://hvntonight.github.io/agent-engineering-notes/",
@@ -9,6 +9,23 @@
     "能阅读基础 Python；不要求训练模型。",
     "网页练习在浏览器运行；本地实验使用 Python 3.12+。",
     "只有显式选择 Codex 后端才会调用模型。"
+  ],
+  "motion_readings": [
+    {
+      "title": "Claude：Custom visuals in chat and Cowork",
+      "url": "https://support.claude.com/en/articles/13979539-custom-visuals-in-chat-and-cowork",
+      "borrow": "用 HTML 构建可操作的图形，围绕具体问题提供控件；本课件的动画代码重新编写。"
+    },
+    {
+      "title": "Red Blob Games：Making of Introduction to A*",
+      "url": "https://www.redblobgames.com/pathfinding/a-star/making-of.html",
+      "borrow": "让图、内部状态与步骤控制同步；可以暂停、前进、后退，再对照输入与输出。制作笔记描述的是历史版本。"
+    },
+    {
+      "title": "Bartosz Ciechanowski：Internal Combustion Engine",
+      "url": "https://ciechanow.ski/internal-combustion-engine/",
+      "borrow": "围绕部件的作用逐步拆解过程，移动图形与附近文字一起解释；没有移用作者的图形或源码。"
+    }
   ],
   "extra_readings": [
     {
@@ -43,6 +60,10 @@
         {
           "kind": "p",
           "text": "假设同事给你一张库存单：411 箱，每箱 152 件；本期发出 11,260 件，收到 708 件可售退货，又报损 152 件。问题是：还剩多少可售库存？你可以写一个公式解决它，也可以让模型自己读记录、调用计算器、交回结果。我们从后者的最小版本开始。"
+        },
+        {
+          "kind": "motion",
+          "id": "01"
         },
         {
           "kind": "heading",
@@ -144,6 +165,10 @@
       ],
       "blocks": [
         {
+          "kind": "motion",
+          "id": "02"
+        },
+        {
           "kind": "heading",
           "text": "先不经过模型，直接测函数"
         },
@@ -239,6 +264,10 @@
         {
           "kind": "p",
           "text": "第一次失败最容易藏在最后的成功总结里。本节先看一条已保存的真实记录：我们让计算器首次返回 TEMPORARY_UNAVAILABLE，观察下一轮是否读取这个错误。资料已经在初始输入里，所以这条真实轨迹没有额外的 read 动作。"
+        },
+        {
+          "kind": "motion",
+          "id": "03"
         },
         {
           "kind": "lab",
@@ -339,6 +368,10 @@
           "text": "库存单很短，全文塞进输入没有明显问题。资料扩大后，常见选择是先搜索，再读少量命中项。但请求次数也随之变化。我们另做了一道发布记录追踪题：从事件找到固定运行手册，再找到被批准的发布产物。下面的数据属于这道文档题，不是库存题。"
         },
         {
+          "kind": "motion",
+          "id": "04"
+        },
+        {
           "kind": "lab",
           "name": "context"
         },
@@ -436,6 +469,10 @@
           "text": "设想系统把“答案与计算器返回一致”作为通过条件。它会挡住抄错数值，却挡不住把退货写成减项。再设想引用检查只看文件是否存在：引用一份无关文件也可能通过。检查器本身需要测试。"
         },
         {
+          "kind": "motion",
+          "id": "05"
+        },
+        {
           "kind": "lab",
           "name": "verification"
         },
@@ -520,6 +557,10 @@
           "text": "前几节已经有自己的小循环，现在再读成熟实现会容易得多。先选一个问题：动作如何回来，历史如何投影，权限在哪里判定，客户端断线后怎么恢复。只追这条路径，不必一开始读完整个仓库。"
         },
         {
+          "kind": "motion",
+          "id": "06"
+        },
+        {
           "kind": "lab",
           "name": "implementations"
         },
@@ -597,6 +638,10 @@
         {
           "kind": "p",
           "text": "我们最初的六道题，三个条件都通过了。对开发来说，这是循环接通的好消息；对架构比较来说，题目已经不能区分方案。下面保留全部记录，包括实际调用和用量，不把这六题包装成公开基准成绩。"
+        },
+        {
+          "kind": "motion",
+          "id": "07"
         },
         {
           "kind": "lab",
@@ -704,6 +749,10 @@
         {
           "kind": "p",
           "text": "做到这里，不必再加一批新组件。挑选一个你确实需要的任务，把它从示例改成自己的项目。可以仍做库存，也可以换成发布资料核对或工单调查；关键是能独立检查结果。"
+        },
+        {
+          "kind": "motion",
+          "id": "08"
         },
         {
           "kind": "heading",

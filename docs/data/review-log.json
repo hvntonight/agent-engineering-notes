@@ -60,5 +60,28 @@
         "new_model_calls": 0
       }
     }
+  ],
+  "updates": [
+    {
+      "version": "2026.10.24-v3-animation",
+      "date": "2026-10-24",
+      "title": "动画版的三项检查",
+      "result": "内容核对与本地交互已通过，公网验证正在进行。",
+      "review_file": "reviews/animation-review.json",
+      "checks": [
+        {
+          "focus": "内容与数据",
+          "result": "15 项 JavaScript 检查通过；保留 22 次既有真实任务，未新增模型调用。"
+        },
+        {
+          "focus": "交互与可读性",
+          "result": "65 项动画检查与 54 项原课件回归通过；21 个自动无障碍检查状态未发现违规。"
+        },
+        {
+          "focus": "公网发布",
+          "result": "正在验证最终 Pages 构建与线上交互。"
+        }
+      ]
+    }
   ]
 }

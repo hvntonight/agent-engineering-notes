@@ -161,14 +161,24 @@ CHAPTERS=[
   ],'prompt':'完成一页项目说明：具体任务、一次失败、一项有证据的决定，以及下一步。'}
 ]
 
+for chapter in CHAPTERS:
+    # Place the moving explanation beside the opening question, retaining the runnable labs.
+    position=1 if chapter['blocks'][0]['kind']=='p' else 0
+    chapter['blocks'].insert(position,{'kind':'motion','id':chapter['id']})
+
 META={
  'title':'Agent 工程笔记',
- 'version':'2026.10.24-v2',
+ 'version':'2026.10.24-v3-animation',
  'subtitle':'用一个库存核对任务，学习循环、工具、状态和评测。',
  'repo':'https://github.com/hvntonight/agent-engineering-notes',
  'public_url':'https://hvntonight.github.io/agent-engineering-notes/',
  'source_date':'2026-10-24',
  'preparation':['能阅读基础 Python；不要求训练模型。','网页练习在浏览器运行；本地实验使用 Python 3.12+。','只有显式选择 Codex 后端才会调用模型。'],
+ 'motion_readings':[
+  {'title':'Claude：Custom visuals in chat and Cowork','url':'https://support.claude.com/en/articles/13979539-custom-visuals-in-chat-and-cowork','borrow':'用 HTML 构建可操作的图形，围绕具体问题提供控件；本课件的动画代码重新编写。'},
+  {'title':'Red Blob Games：Making of Introduction to A*','url':'https://www.redblobgames.com/pathfinding/a-star/making-of.html','borrow':'让图、内部状态与步骤控制同步；可以暂停、前进、后退，再对照输入与输出。制作笔记描述的是历史版本。'},
+  {'title':'Bartosz Ciechanowski：Internal Combustion Engine','url':'https://ciechanow.ski/internal-combustion-engine/','borrow':'围绕部件的作用逐步拆解过程，移动图形与附近文字一起解释；没有移用作者的图形或源码。'}
+ ],
  'extra_readings':[
   {'title':'RULER：长上下文的多类测试','url':'https://arxiv.org/abs/2404.06654'},
   {'title':'Agent 评测方法','url':'https://www.anthropic.com/research/demystifying-evals-for-ai-agents'},

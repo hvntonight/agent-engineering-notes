@@ -27,6 +27,9 @@ def verify(base,minimum_reviews,expected_local=False):
     assert 'Agent 工程笔记' in html and './assets/app.js' in html
     manifest=json.loads(fetch(base+'data/build-manifest.json'))
     assert manifest['chapters']==8 and manifest['tutorial_cases']==14
+    course=json.loads(fetch(base+'data/course.json'))
+    assert all(sum(block['kind']=='motion' for block in ch['blocks'])==1 for ch in course['chapters'])
+    assert all('assets/'+name in manifest['files'] for name in ['motion.js','motion-data.js','motion.css'])
     if expected_local:
         local=Path(__file__).resolve().parents[1]/'docs/data/build-manifest.json'
         assert manifest==json.loads(local.read_text()),'Published artifact is not the expected local build yet'
@@ -60,7 +63,7 @@ def verify(base,minimum_reviews,expected_local=False):
             if exit_code==0:assert result['answer']=='51768'
             else:assert result['status']=='step_budget_exhausted'
             runs.append({'arguments':arguments,'exit_code':exit_code,'decision_steps':steps,'model_calls':0})
-    return {'base':base,'https':'verified','manifest_assets_matched':len(verified),'expected_local_build_matched':expected_local,'chapters':8,'tutorial_cases':14,
+    return {'base':base,'https':'verified','manifest_assets_matched':len(verified),'expected_local_build_matched':expected_local,'chapters':8,'animation_chapters':8,'tutorial_cases':14,
             'public_review_rounds':len(review_log['rounds']),'real_trials':22,'model_decisions':33,'downloaded_lab_runs':runs}
 
 

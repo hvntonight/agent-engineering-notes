@@ -1,5 +1,6 @@
 import {loadState,saveState,validateImport,mergeState} from './state.js';
 import {mountLab} from './labs.js';
+import {mountMotion,mountAnimationPage,disposeMotions} from './motion.js';
 
 const $=(s,root=document)=>root.querySelector(s);
 const $$=(s,root=document)=>[...root.querySelectorAll(s)];
@@ -16,7 +17,7 @@ function closeNav(){$('#sidebar')?.classList.remove('open');$('#menu')?.setAttri
 function doneCount(){return course.chapters.filter(ch=>entry(ch.id).done).length;}
 
 function shell(){
-  $('#app').innerHTML=`<aside id="sidebar" class="sidebar"><button id="close-nav" class="close-nav" aria-label="关闭目录">×</button><a href="#overview" class="brand"><span class="terminal-mark">&gt;_</span><span>Agent 工程笔记<small>一个可以动手改的小项目</small></span></a><button class="search" id="search"><span>搜索正文</span><kbd>/</kbd></button><nav class="chapter-nav" aria-label="章节目录">${course.chapters.map(ch=>`<a href="#${ch.id}" data-chapter="${ch.id}"><span>${ch.id}</span><strong>${esc(ch.title)}</strong><i>${entry(ch.id).done?'✓':''}</i></a>`).join('')}</nav><nav class="other-nav" aria-label="其他内容"><a href="#experiments">实验记录</a><a href="#implementations">实现走读</a><a href="#references">参考书架</a><a href="#notes">我的实践记录</a></nav><div class="sidebar-bottom"><div><span>已读 <b id="done-count">${doneCount()}</b> / 8</span><a href="#notes">导入 / 导出</a></div><p>记录保存在当前浏览器。</p></div></aside><button class="nav-backdrop" id="nav-backdrop" aria-label="关闭目录"></button><div class="workspace"><header class="topbar"><button id="menu" class="menu" aria-label="展开目录" aria-expanded="false" aria-controls="sidebar">☰</button><a href="#overview" class="home-link">教程</a><span id="crumb"></span><a href="${esc(course.repo)}" class="repo-link" target="_blank" rel="noopener noreferrer">GitHub ↗</a></header><main id="main" tabindex="-1"></main><footer><span>Agent 工程笔记 · ${esc(course.version)}</span><a href="#references">参考来源</a><a href="#reviews">三轮审阅记录</a></footer></div>`;
+  $('#app').innerHTML=`<aside id="sidebar" class="sidebar"><button id="close-nav" class="close-nav" aria-label="关闭目录">×</button><a href="#overview" class="brand"><span class="terminal-mark">&gt;_</span><span>Agent 工程笔记<small>一个可以动手改的小项目</small></span></a><button class="search" id="search"><span>搜索正文</span><kbd>/</kbd></button><nav class="chapter-nav" aria-label="章节目录">${course.chapters.map(ch=>`<a href="#${ch.id}" data-chapter="${ch.id}"><span>${ch.id}</span><strong>${esc(ch.title)}</strong><i>${entry(ch.id).done?'✓':''}</i></a>`).join('')}</nav><nav class="other-nav" aria-label="其他内容"><a href="#animations">动画课堂 <span aria-hidden="true">▷</span></a><a href="#experiments">实验记录</a><a href="#implementations">实现走读</a><a href="#references">参考书架</a><a href="#notes">我的实践记录</a></nav><div class="sidebar-bottom"><div><span>已读 <b id="done-count">${doneCount()}</b> / 8</span><a href="#notes">导入 / 导出</a></div><p>记录保存在当前浏览器。</p></div></aside><button class="nav-backdrop" id="nav-backdrop" aria-label="关闭目录"></button><div class="workspace"><header class="topbar"><button id="menu" class="menu" aria-label="展开目录" aria-expanded="false" aria-controls="sidebar">☰</button><a href="#overview" class="home-link">教程</a><span id="crumb"></span><a href="${esc(course.repo)}" class="repo-link" target="_blank" rel="noopener noreferrer">GitHub ↗</a></header><main id="main" tabindex="-1"></main><footer><span>Agent 工程笔记 · ${esc(course.version)}</span><a href="#references">参考来源</a><a href="#reviews">三轮审阅记录</a></footer></div>`;
   $('#menu').onclick=()=>$('#menu').setAttribute('aria-expanded',String($('#sidebar').classList.toggle('open')));
   $('#close-nav').onclick=closeNav;$('#nav-backdrop').onclick=closeNav;
   $$('.sidebar a').forEach(a=>a.onclick=closeNav);
@@ -26,6 +27,7 @@ function shell(){
 function overview(){
   const resume=course.chapters.find(ch=>ch.id===state.last&&!entry(ch.id).done)||course.chapters.find(ch=>!entry(ch.id).done)||course.chapters[0];
   $('#main').innerHTML=`<div class="intro"><div><p class="kicker">一份带代码和实验记录的教程</p><h1>Agent 工程笔记</h1><p class="intro-text">${esc(course.subtitle)}</p><p>从读取一张单据开始。每次遇到一个具体问题，就改一处程序，再检查改动有没有用。最后再带着这些问题，去读成熟 Agent 的实现。</p><div class="actions"><a class="button primary" href="#${resume.id}">${state.last?'继续阅读':'从第一节开始'} →</a><a class="button" href="${file('lab/agent-lab.zip')}" download>下载 Python 实验包</a></div></div><div class="sample-record"><div class="sample-header">本教程的任务 <span>inventory</span></div><p>核对本期可售库存。</p><dl><div><dt>初始库存</dt><dd>411 箱 × 152 件</dd></div><div><dt>已发出</dt><dd>11,260 件</dd></div><div><dt>可售退货</dt><dd>708 件</dd></div><div><dt>本期报损</dt><dd>152 件</dd></div></dl><pre>read → calculate → finish\n结果：51768</pre><small>固定脚本也能完成这道题。后面再逐步加入变化。</small></div></div>
+    <section class="animation-invite"><div><span class="kicker">新增 · 动画课堂</span><h2>想先看一遍它是怎样运行的？</h2><p>把循环、工具、失败与状态变化慢放；每一步都有图、代码和动手提示。</p></div><a href="#animations" class="button primary">打开动画课堂 →</a></section>
     <section class="start-note"><h2>怎么使用</h2><p>网页里的计算器与演示可以直接操作。下载包先跑确定性测试；需要测模型时，再切换到已登录的 Codex 后端。准备一份自己的记录：改了什么、看到了什么、还没解释什么。</p><details><summary>开始之前需要什么？</summary><ul>${course.preparation.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></details></section>
     <section class="contents"><div class="section-heading"><h2>正文</h2><span>8 节，按问题推进</span></div>${course.chapters.map(ch=>`<a href="#${ch.id}" class="contents-row"><span>${ch.id}</span><div><h3>${esc(ch.title)}</h3><p>${esc(ch.deck)}</p></div><small>${esc(ch.time)}</small><i>${entry(ch.id).done?'✓':'→'}</i></a>`).join('')}</section>
     <section class="reading-note"><h2>这次重写参考了什么</h2><p>Minimal Agent 的小循环、Hugging Face 的单文件练习、Stanford CS329Z 的测试与实验安排，是这份教程的主要组织参考。其余课程和原始文档放在书架里，逐项写明借鉴和取舍。</p><a href="#references" class="inline-link">查看 14 组案例与直接来源 →</a></section>`;
@@ -38,6 +40,7 @@ function blockHtml(block,index){
     case 'code':return `<div class="code-block"><div class="code-caption"><span>${esc(block.caption)}</span><button data-copy="${index}">复制</button></div><pre><code>${esc(block.text)}</code></pre>${block.file?`<a href="${file(`lab/${block.file}`)}" target="_blank" rel="noopener noreferrer">打开完整文件：${esc(block.file)} ↗</a>`:''}</div>`;
     case 'table':return `<div class="table-scroll"><table><thead><tr>${block.head.map(s=>`<th>${esc(s)}</th>`).join('')}</tr></thead><tbody>${block.rows.map(row=>`<tr>${row.map(s=>`<td>${esc(s)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     case 'lab':return `<div class="lab" data-lab="${block.name}"></div>`;
+    case 'motion':return `<div data-motion-chapter="${esc(block.id)}"></div>`;
     case 'aside':return `<aside class="aside"><strong>${esc(block.title)}</strong><p>${esc(block.text)}</p></aside>`;
     case 'exercise':return `<section class="exercise"><div class="exercise-label">${esc(block.label||'动手改一处')}</div><h3>${esc(block.title)}</h3><ol>${block.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol><details><summary>怎样检查结果</summary><p>${esc(block.expected)}</p>${block.hint?`<p>${esc(block.hint)}</p>`:''}</details></section>`;
     default:return '';
@@ -57,6 +60,7 @@ function chapter(id){
   $('#note').oninput=e=>{state.chapters[id]={...entry(id),note:e.target.value};if(persist())$('#saved').textContent='已保存在当前浏览器';else $('#saved').textContent='保存失败，可以先导出记录。';};
   $('#done').onchange=e=>{state.chapters[id]={...entry(id),done:e.target.checked};persist();updateProgress();};
   $$('[data-lab]').forEach(node=>mountLab(node.dataset.lab,node,{experiments,agents,course,file,esc,download,notice}));
+  $$('[data-motion-chapter]').forEach(node=>mountMotion(node.dataset.motionChapter,node,{experiments,agents,course,file,notice},{embedded:true}));
 }
 
 function heading(title,lead){return `<header class="chapter-header"><h1>${esc(title)}</h1><p>${esc(lead)}</p></header>`;}
@@ -90,6 +94,11 @@ function notesPage(){
 
 function reviewsPage(){
   $('#main').innerHTML=heading('三轮审阅记录','每轮记录发现、修正和检查依据。补充回归测试不冒充另一轮审阅。')+`<div class="prose wide">${reviewLog.rounds?.length?reviewLog.rounds.map(round=>`<section class="review-card"><span class="kicker">第 ${round.round} 轮 · ${esc(round.date)}</span><h2>${esc(round.focus)}</h2><p>${esc(round.result)}</p><ul>${round.changes.map(s=>`<li>${esc(s)}</li>`).join('')}</ul><details><summary>检查依据</summary><pre>${esc(JSON.stringify(round.evidence,null,2))}</pre></details></section>`).join(''):'<p>审阅仍在进行，记录会随本版本更新。</p>'}</div>`;
+  if(reviewLog.updates?.length){
+    const block=document.createElement('section');block.className='review-updates prose wide';
+    block.innerHTML=reviewLog.updates.map(update=>`<section class="review-update"><p class="kicker">${esc(update.version)} · ${esc(update.date)}</p><h2>${esc(update.title)}</h2><p>${esc(update.result)}</p><ol>${update.checks.map(check=>`<li><strong>${esc(check.focus)}</strong>：${esc(check.result)}</li>`).join('')}</ol><a href="${esc(course.repo)}/blob/main/${esc(update.review_file)}" target="_blank" rel="noopener noreferrer">查看本次检查记录 ↗</a></section>`).join('');
+    $('#main').append(block);
+  }
 }
 
 function updateProgress(){
@@ -97,10 +106,10 @@ function updateProgress(){
   $$('[data-chapter]').forEach(a=>$('i',a).textContent=entry(a.dataset.chapter).done?'✓':'');
 }
 function route(){
-  if(!course)return;closeNav();let key='overview';try{key=decodeURIComponent(location.hash.slice(1))||'overview';}catch{}const ch=course.chapters.find(c=>c.id===key);
-  $$('.sidebar a').forEach(a=>a.classList.toggle('active',a.hash===`#${key}`));
-  $('#crumb').textContent=ch?`${ch.id} / ${ch.title}`:({overview:'',experiments:'实验记录',implementations:'实现走读',references:'参考书架',notes:'我的实践记录',reviews:'三轮审阅记录'}[key]||'');
-  if(ch)chapter(key);else({overview,experiments:experimentPage,implementations:implementationPage,references:referencePage,notes:notesPage,reviews:reviewsPage}[key]||overview)();
+  if(!course)return;disposeMotions();closeNav();let key='overview';try{key=decodeURIComponent(location.hash.slice(1))||'overview';}catch{}const ch=course.chapters.find(c=>c.id===key),animation=/^animations(?:\/(0[1-8]))?$/.exec(key);
+  $$('.sidebar a').forEach(a=>a.classList.toggle('active',a.hash===`#${key}`||(animation&&a.hash==='#animations')));
+  $('#crumb').textContent=ch?`${ch.id} / ${ch.title}`:animation?'动画课堂':({overview:'',experiments:'实验记录',implementations:'实现走读',references:'参考书架',notes:'我的实践记录',reviews:'三轮审阅记录'}[key]||'');
+  if(ch)chapter(key);else if(animation)mountAnimationPage($('#main'),{experiments,agents,course,file,notice},animation[1]||'01');else({overview,experiments:experimentPage,implementations:implementationPage,references:referencePage,notes:notesPage,reviews:reviewsPage}[key]||overview)();
   $('#main').dataset.route=key;document.title=ch?`${ch.title} · Agent 工程笔记`:'Agent 工程笔记';window.scrollTo(0,0);
 }
 

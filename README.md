@@ -1,8 +1,12 @@
 # Agent 工程笔记
 
-[阅读教程](https://hvntonight.github.io/agent-engineering-notes/) · [第一节](https://hvntonight.github.io/agent-engineering-notes/#01) · [参考书架](https://hvntonight.github.io/agent-engineering-notes/#references)
+[阅读教程](https://hvntonight.github.io/agent-engineering-notes/) · [动画课堂](https://hvntonight.github.io/agent-engineering-notes/#animations) · [第一节](https://hvntonight.github.io/agent-engineering-notes/#01) · [参考书架](https://hvntonight.github.io/agent-engineering-notes/#references)
 
 用一张库存单贯穿 Agent 的循环、工具、错误、上下文、验证和评测。8 节正文配合可下载的 Python 小程序、浏览器实验与真实运行记录。
+
+每节增加了一段可播放的动画。沿数据流逐步查看图、讲解、代码示意与输入输出，支持暂停、前后单步、拖动、倍速、全屏与节点职责说明。第 6 段可以切换 Codex、Claude Code、Pi 与 OpenCode V2 的公开架构；还可以改变公式、资料规模和缓存失效策略来观察后果。
+
+动画由本地 SVG 与 JavaScript 绘制，没有视频或字体 CDN 依赖。只有用户开始播放才运行动画；离开页面、滚出视野或切换到后台后暂停，并遵循系统减少动态效果的偏好。网页播放器不调用模型。控制结构是为教学简化的示意，完整文件另行链接；架构图是公开资料抽象，真实轨迹与机制演示保留不同标记。
 
 教程参考了 14 组课程与原始文档的教学组织，包括 Minimal Agent、Hugging Face Agents Course、smolagents、Pydantic AI、Google ADK、LangChain Academy、Berkeley 课程与 Stanford CS329Z。书架逐项说明借鉴、取舍和可访问范围，正文和练习重新编写。
 
@@ -56,6 +60,7 @@ python3 tests/publication_audit.py
 ```bash
 npm install --prefix .qa --ignore-scripts playwright @axe-core/playwright
 node tests/browser.mjs
+node tests/motion-browser.mjs
 ```
 
 浏览器使用 Playwright 已配置的 Chromium；本机有兼容浏览器时可设置 `CHROMIUM_EXECUTABLE`。`COURSE_BASE_URL` 可指向同一路径下的公网版本。截图和测试临时记录位于忽略目录 `qa-artifacts/`。
@@ -73,3 +78,5 @@ python3 tests/live_release.py --expected-local
 GitHub Pages 的发布源为 `main` 分支的 `/docs`。发布使用 PAT 认证的 GitHub REST API 创建或更新 tree、commit 与 branch ref，并配置 Pages；认证由站点之外的本地发布客户端负责。
 
 三轮审阅的发现、修复与验证摘要见 [reviews/index.json](reviews/index.json)，网页也提供[审阅记录](https://hvntonight.github.io/agent-engineering-notes/#reviews)。
+
+动画版另行检查了数据与来源一致性、播放器交互、移动端布局、减少动态效果、生命周期清理和公网构建。浏览器测试临时报告继续保存在忽略目录，不包含用户学习笔记。
