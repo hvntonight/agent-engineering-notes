@@ -18,7 +18,7 @@ def public_files():
         if not path.is_file() or any(part in SKIP for part in relative.parts):continue
         if relative.parts[0] not in TOP and str(relative) not in FILES:continue
         if path.name.startswith('.') and path.name not in {'.nojekyll','.gitignore'}:continue
-        if path.suffix not in {'.py','.json','.js','.css','.html','.md','.svg','.zip',''}:continue
+        if path.suffix not in {'.py','.json','.js','.mjs','.css','.html','.md','.svg','.zip',''}:continue
         assert not path.is_symlink(),f'Symlink in publication set: {relative}'
         yield path
 
